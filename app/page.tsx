@@ -7,9 +7,9 @@ import "./grapesjs.css";
 import { Textarea } from "@/components/ui/textarea";
 import "./main.scss";
 import { ia } from "./ia";
-import ButtonDown from "./buttonDown/ButtonDown";
-import CustomDialog from "./settings/Settings";
-import TopHoverMenu from "./topHoverMenu/TopHoverMenu";
+import {ButtonDown} from "./buttonDown/ButtonDown";
+import {CustomDialog} from "./settings/Settings";
+import {TopHoverMenu} from "./topHoverMenu/TopHoverMenu";
 
 export default function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);

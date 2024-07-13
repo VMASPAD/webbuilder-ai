@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, { useState, useEffect } from "react";
 
-const BottomHoverMenu = () => {
+const ButtonDown = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -35,4 +35,4 @@ const BottomHoverMenu = () => {
   );
 };
 
-export default BottomHoverMenu;
+export default ButtonDown;

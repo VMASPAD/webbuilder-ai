@@ -7,7 +7,7 @@ import "./grapesjs.css";
 import { Textarea } from "@/components/ui/textarea";
 import "./main.scss";
 import { ia } from "./ia";
-import BottomHoverMenu from "./buttonDown/ButtonDown";
+import ButtonDown from "./buttonDown/ButtonDown";
 import CustomDialog from "./settings/Settings";
 import TopHoverMenu from "./topHoverMenu/TopHoverMenu";
 
@@ -455,7 +455,7 @@ editor.Commands.add('show-styles', {
         </div>
       </section>      <CustomDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
 
-      <BottomHoverMenu />
+      <ButtonDown />
     </>
   );
 }

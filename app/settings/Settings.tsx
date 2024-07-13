@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import React from 'react';
 import {
@@ -46,7 +45,7 @@ const CustomDialog = ({ isOpen, onClose }: Dialog) => {
               <Separator className="my-4"/>
               <Input placeholder='prompt' id="prompt"/>
               <Separator className="my-4"/>
-              <Button onClick={() => {
+              <Button className='bg-slate-900' onClick={() => {
     toast({
       title: "Changed",
       description: "API and Prompt is changed",

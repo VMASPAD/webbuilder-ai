@@ -1,3 +1,4 @@
+//@ts-nocheck
 import React, { useState, useEffect } from "react";
 
 const BottomHoverMenu = () => {
@@ -27,6 +28,8 @@ const BottomHoverMenu = () => {
     >
       <div className="bg-gray-900 text-white p-4 rounded-lg shadow-lg">
         <div className="panel__top"></div>
+        <div className="panel__devices"></div>
+
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-
+//@ts-nocheck
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -7,9 +7,9 @@ import "./grapesjs.css";
 import { Textarea } from "@/components/ui/textarea";
 import "./main.scss";
 import { ia } from "./ia";
-import BottomHoverMenu from "./buttondown/ButtonDown";
+import BottomHoverMenu from "./buttonDown/ButtonDown";
 import CustomDialog from "./settings/Settings";
-import ReactDOM from 'react-dom/client';
+import TopHoverMenu from "./topHoverMenu/TopHoverMenu";
 
 export default function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -48,21 +48,48 @@ export default function Home() {
             },
           },
           {
+            id: 'panel-switcher',
+            el: '.panel__switcher',
+            buttons: [ {
+                id: 'show-style',
+                active: true,
+                label: 'Styles',
+                command: 'show-styles',
+                togglable: false,
+            }],
+          },
+          {
             id: "panel-devices",
-            el: ".gjs-frame-wrapper__top",
+            el: ".panel__devices",
             buttons: [
               {
                 id: "device-desktop",
-                label: "D",
+                label: "Desktop",
                 command: "set-device-desktop",
                 active: true,
                 togglable: false,
+                attributes:{
+                  title: 'Desktop'
+                }
+              },
+              {
+                id: "device-tablet",
+                label: "Tablet",
+                command: "set-device-tablet",
+                active: true,
+                togglable: false,
+                attributes:{
+                  title: 'Tablet'
+                }
               },
               {
                 id: "device-mobile",
-                label: "M",
+                label: "Movile",
                 command: "set-device-mobile",
                 togglable: false,
+                attributes:{
+                  title: 'Movile'
+                }
               },
             ],
           },
@@ -73,6 +100,11 @@ export default function Home() {
           {
             name: "Desktop",
             width: "", // default size
+          },
+          {
+            name: "Tablet",
+            width: "758", // this value will be used on canvas width
+            widthMedia: "980px", // this value will be used in CSS @media
           },
           {
             name: "Mobile",
@@ -319,11 +351,40 @@ export default function Home() {
         },
       ],
     });
-    
+    // Define commands
+editor.Commands.add('show-layers', {
+  getRowEl(editor) { return editor.getContainer().closest('.editor-row'); },
+  getLayersEl(row) { return row.querySelector('.layers-container') },
+
+  run(editor, sender) {
+    const lmEl = this.getLayersEl(this.getRowEl(editor));
+    lmEl.style.display = '';
+  },
+  stop(editor, sender) {
+    const lmEl = this.getLayersEl(this.getRowEl(editor));
+    lmEl.style.display = 'none';
+  },
+});
+editor.Commands.add('show-styles', {
+  getRowEl(editor) { return editor.getContainer().closest('.editor-row'); },
+  getStyleEl(row) { return row.querySelector('.styles-container') },
+
+  run(editor, sender) {
+    const smEl = this.getStyleEl(this.getRowEl(editor));
+    smEl.style.display = '';
+  },
+  stop(editor, sender) {
+    const smEl = this.getStyleEl(this.getRowEl(editor));
+    smEl.style.display = 'none';
+  },
+});
     editor.Commands.add("set-device-desktop", {
       run: (editor) => editor.setDevice("Desktop"),
     });
-    editor.Commands.add("set-device-mobile", {
+    editor.Commands.add("set-device-tablet", {
+      run: (editor) => editor.setDevice("Tablet"),
+    });   
+     editor.Commands.add("set-device-mobile", {
       run: (editor) => editor.setDevice("Mobile"),
     });
     editor.Commands.add('clear-canvas', {
@@ -383,7 +444,7 @@ export default function Home() {
   }, []);
   return (
     <>
-      <BottomHoverMenu />
+    <TopHoverMenu />
       <section className="h-screen">
       <div className=" grid grid-cols-8 !h-screen">
         <div id="blocks" className="h-screen"></div>
@@ -394,6 +455,7 @@ export default function Home() {
         </div>
       </section>      <CustomDialog isOpen={isDialogOpen} onClose={() => setIsDialogOpen(false)} />
 
+      <BottomHoverMenu />
     </>
   );
 }

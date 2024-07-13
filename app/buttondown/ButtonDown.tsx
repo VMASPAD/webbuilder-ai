@@ -1,7 +1,7 @@
 //@ts-nocheck
 import React, { useState, useEffect } from "react";
 
-const ButtonDown = () => {
+function ButtonDown(){
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {

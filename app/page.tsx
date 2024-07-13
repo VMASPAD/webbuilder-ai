@@ -132,7 +132,7 @@ export default function Home() {
         {
           id: "export",
           className: "btn-open-export",
-          label: "Exp",
+          label: "Code",
           command: "export-template",
           context: "export-template", // For grouping context of buttons from the same panel
         },

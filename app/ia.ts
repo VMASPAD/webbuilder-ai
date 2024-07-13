@@ -1,8 +1,9 @@
+// @ts-ignore
 
 import { createOpenAI } from '@ai-sdk/openai';
 import { generateText } from 'ai';
 
-export async function ia(api) {
+export async function ia(api: string) {
     console.log(
       localStorage.getItem("apigroq"))
     console.log(process.env.NEXT_PUBLIC_GROQ_API_KEY)

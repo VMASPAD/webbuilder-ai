@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React from 'react';
 import {
   Dialog,
@@ -46,8 +48,8 @@ const CustomDialog = ({ isOpen, onClose }: Dialog) => {
               <Separator className="my-4"/>
               <Button onClick={() => {
     toast({
-      title: "Generated",
-      description: "Prompt genaret succesfully",
+      title: "Changed",
+      description: "API and Prompt is changed",
     });
     changeData();
   }}>Change</Button>

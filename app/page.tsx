@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -155,7 +157,7 @@ export default function Home() {
           label: "JSON",
           context: "show-json",
           command(editor) {
-            console.log(<Textarea placeholder="Type your message here." />);
+            console.log(editor)
             editor.Modal.setTitle("Components JSON")
               .setContent(
                 `<textarea style="width:100%; height: 250px;">

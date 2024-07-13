@@ -1,0 +1,19 @@
+@tailwind base;
+  @tailwind components;
+  @tailwind utilities;
+
+  .gjs-pn-panel{
+    padding: 3px;
+    position: relative;
+  }
+  .gjs-one-bg{
+    @apply bg-slate-900
+  }
+  .fill-white-container {
+    color: white; /* Define el color para el contenedor */
+  }
+  .gjs-cv-canvas {
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }

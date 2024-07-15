@@ -17,3 +17,32 @@
     width: 100%;
     height: 100%;
   }
+
+  .editor-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    flex-wrap: nowrap;
+  }
+
+  .editor-canvas {
+    flex-grow: 1;
+  }
+
+  .panel__right {
+    flex-basis: 230px;
+    position: relative;
+    overflow-y: auto;
+  } 
+
+  .panel__basic-actions {
+    display: flex;
+    justify-content: space-between;
+  } 
+
+  .gjs-cv-canvas-bg{
+    width: -webkit-fill-available;
+  }
+  .panel__devices{
+    @apply flex justify-center
+  }

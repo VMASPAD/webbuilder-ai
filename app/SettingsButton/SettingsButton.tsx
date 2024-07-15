@@ -1,4 +1,4 @@
-//@ts-nocheck
+
 import React from 'react';
 import {
   Dialog,
@@ -18,19 +18,15 @@ interface Dialog{
     onClose: string
 }
 
-const CustomDialog = ({ isOpen, onClose }: Dialog) => {
+const SettingsButton = ({ isOpen, onClose }: Dialog) => {
     const { toast } = useToast()
-    console.log(isOpen,onClose)
     function changeData() {
         const api = (document.getElementById("API") as HTMLInputElement).value;
         const prompt = (document.getElementById("prompt") as HTMLInputElement).value;
       
-        if (!localStorage.getItem("apigroq")) {
           localStorage.setItem("apigroq", api);
-        }
-        if (!localStorage.getItem("prompt")) {
+        
           localStorage.setItem("prompt", prompt);
-        }
       }
 
     return (
@@ -59,4 +55,4 @@ const CustomDialog = ({ isOpen, onClose }: Dialog) => {
     );
   };
 
-export default CustomDialog;
+export default SettingsButton;

@@ -12,9 +12,7 @@ export async function ia(api: string) {
 
   const { text } = await generateText({
     model: groq("llama3-70b-8192"),
-    prompt:
-      "Quiero que me generes un codigo de html aleatorio de lo que tu quieras, solo esribre el codigo html y nada mas solo CODIGO (ademas quiero que esribas solo la etiqueta style y luego solo el contenido que iria en la etiqueta body y no quiero que pongas las ``` al principio y al final del codigo) y recuerda que en la respuesta tiene que estar solo el codigo html",
-  });
+    prompt: `${localStorage.getItem("prompt")}` });
   console.log(text);
   return text;
 }

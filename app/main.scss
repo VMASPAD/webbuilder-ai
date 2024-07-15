@@ -46,3 +46,19 @@
   .panel__devices{
     @apply flex justify-center
   }
+  #gjs{
+    height: -webkit-fill-available !important;
+  }
+
+  .gjs-selected{
+    @apply outline outline-offset-2 outline-1 outline-blue-500 rounded-md
+  }
+  .gjs-hovered{
+    @apply outline outline-offset-2 outline-1 outline-blue-500 rounded-md
+  }
+  .gjs-toolbar{
+    @apply rounded-md 
+  }
+  .gjs-badge{
+    @apply rounded-md absolute top-5
+  }

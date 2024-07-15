@@ -1,4 +1,4 @@
-// @ts-nocheck
+ 
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ function ButtonDown(){
     const handleMouseMove = (event) => {
       const { clientY } = event;
       const { innerHeight } = window;
-      const threshold = innerHeight - 100; // Appears when the cursor is 100px from the bottom edge
+      const threshold = innerHeight - 160; // Appears when the cursor is 100px from the bottom edge
 
       setIsVisible(clientY > threshold);
     };
@@ -50,9 +50,12 @@ export default function Home() {
       fromElement: true,
       height: "100vh",
       width: "auto",
-      storageManager: false,
+      storageManager: true,
       layerManager: {
         appendTo: ".layers-container",
+      },
+      traitManager: {
+        appendTo: '.traits-container',
       },
       blockManager: {
         appendTo: "#blocks",
@@ -286,7 +289,7 @@ export default function Home() {
               {
                 id: "show-layers",
                 active: true,
-                label: "Layers",
+                label:`<img width="25px" src="./BxsLayer.svg" class="fill-white"/>`,
                 command: "show-layers",
                 // Once activated disable the possibility to turn it off
                 togglable: false,
@@ -294,10 +297,17 @@ export default function Home() {
               {
                 id: "show-style",
                 active: true,
-                label: "Styles",
+                label: `<img width="25px" src="./MaterialSymbolsStyle.svg" class="fill-white"/>`,
                 command: "show-styles",
                 togglable: false,
-              },
+              }, 
+              {
+                id: 'show-traits',
+                active: true,
+                label: `<img width="25px" src="./LucideTableProperties.svg" class="fill-white"/>`,
+                command: 'show-traits',
+                togglable: false,
+            }
             ],
           },
         ],
@@ -330,7 +340,7 @@ export default function Home() {
           {
             name: "Extra",
             open: false,
-            buildProps: ["background-color", "box-shadow", "custom-prop"],
+            buildProps: ["background-color", "box-shadow", "custom-prop",],
             properties: [
               {
                 id: "custom-prop",
@@ -340,9 +350,18 @@ export default function Home() {
                 defaults: "32px",
                 // List of options, available only for 'select' and 'radio'  types
                 options: [
-                  { value: "12px", name: "Tiny" },
-                  { value: "18px", name: "Medium" },
-                  { value: "32px", name: "Big" },
+                  {
+                    value: "12px", name: "Tiny",
+                    id: ""
+                  },
+                  {
+                    value: "18px", name: "Medium",
+                    id: ""
+                  },
+                  {
+                    value: "32px", name: "Big",
+                    id: ""
+                  },
                 ],
               },
             ],
@@ -368,7 +387,18 @@ export default function Home() {
         ],
       },
     });
-
+    editor.Commands.add('clear-canvas', {
+      run: function(editor) {
+        const components = editor.getComponents();
+        components.reset(); // Esto elimina todos los componentes
+        editor.setComponents([]); // Asegura que el canvas esté completamente vacío
+        editor.UndoManager.clear(); // Limpia el historial de deshacer/rehacer
+        editor.setStyle(''); // Limpia todos los estilos
+        editor.Modal.close(); // Cierra cualquier modal abierto
+        editor.store(); // Guarda el estado actual (canvas vacío)
+        return 'Canvas cleared successfully';
+      }
+    });
     editor.Commands.add("show-layers", {
       getRowEl(editor) {
         return editor.getContainer().closest(".editor-row");
@@ -466,6 +496,16 @@ export default function Home() {
       ],
     });
     const commands = editor.Commands;
+editor.Commands.add('set-device-desktop', {
+  run: editor => editor.setDevice('Desktop')
+});
+editor.Commands.add('set-device-tablet', {
+  run: editor => editor.setDevice('Tablet')
+});
+editor.Commands.add('set-device-mobile', {
+  run: editor => editor.setDevice('Mobile')
+});
+
     commands.add("groq", (editor) => {
       // Usar un operador ternario para verificar si existe 'apigroq' en localStorage
       const groq = localStorage.getItem("apigroq")
@@ -506,6 +546,18 @@ export default function Home() {
         setIsDialogOpen(true);
       },
     });
+    editor.Commands.add('show-traits', {
+  getTraitsEl(editor) {
+    const row = editor.getContainer().closest('.editor-row');
+    return row.querySelector('.traits-container');
+  },
+  run(editor, sender) {
+    this.getTraitsEl(editor).style.display = '';
+  },
+  stop(editor, sender) {
+    this.getTraitsEl(editor).style.display = 'none';
+  },
+});
   }, []);
   return (
     <>
@@ -513,14 +565,14 @@ export default function Home() {
         <div id="blocks"></div>
         <div className="editor-row col-span-7">
           <div className="editor-canvas">
-            <div id="gjs">
-              <h1>Hello, GrapesJS!</h1>
+            <div id="gjs"> 
             </div>
           </div>
           <div className="panel__right">
             <div className="panel__switcher"></div>
             <div className="layers-container"></div>
             <div className="styles-container"></div>
+            <div className="traits-container"></div>
           </div>
         </div>
       </section>

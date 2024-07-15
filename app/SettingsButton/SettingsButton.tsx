@@ -1,58 +1,95 @@
-// @ts-nocheck
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/components/ui/use-toast";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Checkbox } from "@/components/ui/checkbox";
 
-interface Dialog{
-    isOpen: boolean
-    onClose: string
+interface DialogProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const SettingsButton = ({ isOpen, onClose }: Dialog) => {
-    const { toast } = useToast()
-    function changeData() {
-        const api = (document.getElementById("API") as HTMLInputElement).value;
-        const prompt = (document.getElementById("prompt") as HTMLInputElement).value;
-      
-          localStorage.setItem("apigroq", api);
-        
-          localStorage.setItem("prompt", prompt);
-      }
+const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
+  const { toast } = useToast();
+  const [checked, setChecked] = useState<boolean>(false);
 
-    return (
-      <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Change prompt or API (Groq).</DialogTitle>
-            <DialogDescription>
-           <p> Change the API or prompt to generate your own response with your access key</p>
-              <Separator className="my-4"/>
-              <Input placeholder='API' id="API"/>
-              <Separator className="my-4"/>
-              <Input placeholder='prompt' id="prompt"/>
-              <Separator className="my-4"/>
-              <Button className='bg-slate-900' onClick={() => {
-    toast({
-      title: "Changed",
-      description: "API and Prompt is changed",
-    });
-    changeData();
-  }}>Change</Button>
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
-    );
+  useEffect(() => {
+    const storedValue = localStorage.getItem("context");
+    setChecked(storedValue === 'true');
+  }, []);
+
+  const handleCheckboxChange = (checked: boolean) => {
+    setChecked(checked);
+    localStorage.setItem("context", checked.toString());
   };
+
+  const changeData = () => {
+    const api = (document.getElementById("API") as HTMLInputElement)?.value;
+    const prompt = (document.getElementById("prompt") as HTMLInputElement)?.value;
+
+    if (api) localStorage.setItem("apigroq", api);
+    if (prompt) localStorage.setItem("prompt", prompt);
+  };
+  const cssArchiveSubmit = (checked: boolean) => {
+    
+  };
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <Tabs defaultValue="Settings" className="w-[400px]">
+            <TabsList>
+              <TabsTrigger value="Settings">Settings</TabsTrigger>
+              <TabsTrigger value="AI">AI</TabsTrigger>
+            </TabsList>
+            <TabsContent value="Settings">
+              <div className="my-10">
+                <Checkbox
+                  checked={checked}
+                  onCheckedChange={handleCheckboxChange}
+                  id="context-checkbox"
+                />
+                <label htmlFor="context-checkbox"> Use context at the prompt </label>
+ 
+              </div>
+            </TabsContent>
+            <TabsContent value="AI">
+              <DialogTitle>Change prompt or API (Groq).</DialogTitle>
+              <DialogDescription>
+                <p>Change the API or prompt to generate your own response with your access key</p>
+              </DialogDescription>
+              <Separator className="my-4" />
+              <Input placeholder="API" id="API" />
+              <Separator className="my-4" />
+              <Input placeholder="prompt" id="prompt" />
+              <Separator className="my-4" />
+              <Button
+                className="bg-slate-900"
+                onClick={() => {
+                  changeData();
+                  toast({
+                    title: "Changed",
+                    description: "API and Prompt is changed",
+                  });
+                }}
+              >
+                Change
+              </Button>
+            </TabsContent>
+          </Tabs>
+        </DialogHeader>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 export default SettingsButton;

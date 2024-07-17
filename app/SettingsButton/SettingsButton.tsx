@@ -1,5 +1,4 @@
-// @ts-nocheck
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, ChangeEvent } from "react";
 import {
   Dialog,
   DialogContent,
@@ -13,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getEditorInstance } from "../page"; 
+import { getEditorInstance } from "../grapesjs";
 
 interface DialogProps {
   isOpen: boolean;
@@ -21,7 +20,7 @@ interface DialogProps {
 }
 
 const SettingsButton = ({ isOpen, onClose }: DialogProps) => { 
-  const [fileContent, setFileContent] = useState(null);
+  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(null);
 
   const { toast } = useToast();
   const [checked, setChecked] = useState<boolean>(false);
@@ -38,23 +37,21 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
 
   const changeData = () => {
     const api = (document.getElementById("API") as HTMLInputElement)?.value;
-    const prompt = (document.getElementById("prompt") as HTMLInputElement)
-      ?.value;
+    const prompt = (document.getElementById("prompt") as HTMLInputElement)?.value;
 
     if (api) localStorage.setItem("apigroq", api);
     if (prompt) localStorage.setItem("prompt", prompt);
   };
-  const handleFileChange = (event) => {
-    console.log("file")
-    const file = event.target.files[0];
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        console.log(e)
-        setFileContent(e.target.result);
+        setFileContent(e.target?.result ?? null);
         const editor = getEditorInstance();
         if (editor) {
-          editor.CssComposer.addRules(e.target.result);
+          editor.CssComposer.addRules(e.target?.result as string);
         } else {
           console.error("Editor instance not found");
         }
@@ -62,6 +59,7 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
       reader.readAsText(file);
     }
   };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
@@ -80,8 +78,7 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
                     id="context-checkbox"
                   />
                   <label htmlFor="context-checkbox">
-                    {" "}
-                    Use context at the prompt{" "}
+                    Use context at the prompt
                   </label>
                 </div>
                 <Separator className="my-4" />
@@ -96,8 +93,7 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
               <DialogTitle>Change prompt or API (Groq).</DialogTitle>
               <DialogDescription>
                 <p>
-                  Change the API or prompt to generate your own response with
-                  your access key
+                  Change the API or prompt to generate your own response with your access key
                 </p>
               </DialogDescription>
               <Separator className="my-4" />

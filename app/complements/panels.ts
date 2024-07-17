@@ -1,8 +1,8 @@
- 
+// @ts-nocheck
 import grapesjs, { Editor, PanelsConfig } from "grapesjs";
 
 let editor: Editor
-export const panels: PanelsConfig = {
+export const panels: PanelsConfig  = {
   defaults: [
     {
       id: "basic-actions",
@@ -10,10 +10,10 @@ export const panels: PanelsConfig = {
       buttons: [
         {
           id: "visibility",
-          active: true, // active by default
+          active: false, 
           className: "btn-toggle-borders",
           label: "<u>B</u>",
-          command: "sw-visibility", // Built-in command
+          command: "sw-visibility", 
         },
                 {
           id: "preview",
@@ -32,21 +32,21 @@ export const panels: PanelsConfig = {
           className: "btn-open-export",
           label: `<img width="25px" src="./GravityUiCode.svg" class="fill-white"/>`,
           command: "export-template",
-          context: "export-template", // For grouping context of buttons from the same panel
+          context: "export-template",
         },
         {
           id: "ia",
           className: "btn-open-export",
           label: `<img width="25px" src="./BiStars.svg" class="fill-white"/>`,
           command: "groq",
-          context: "export-template", // For grouping context of buttons from the same panel
+          context: "export-template", 
         }, 
         {
           id: "settings",
           className: "btn-open-export",
           label: `<img width="25px" src="./UilSetting.svg" class="fill-white"/>`,
           command: "open-settings",
-          context: "export-template", // For grouping context of buttons from the same panel
+          context: "export-template",
         },
         {
           id: "show-json",
@@ -107,10 +107,10 @@ export const panels: PanelsConfig = {
       resizable: {
         maxDim: 350,
         minDim: 200,
-        tc: 0,
-        cl: 1,
-        cr: 0,
-        bc: 0,
+        tc: false,
+        cl: true,
+        cr: false,
+        bc: false,
         keyWidth: "flex-basis",
       },
     },

@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -13,6 +12,7 @@ import { panels } from "./complements/panels";
 import { styleManager } from "./complements/styles";
 import { deviceManager } from "./complements/deviceManager";
 import { command } from "./complements/commands"; 
+import { setEditorInstance } from "./grapesjs";
 function ButtonDown() {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -44,17 +44,6 @@ function ButtonDown() {
       </div>
     </div>
   );
-}
-let editorInstance: Editor | null = null;
-
-export function setEditorInstance(editor) {
-  editorInstance = editor;
-  
-}
-
-export function getEditorInstance() {
-  
-  return editorInstance;
 }
 export default function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -88,13 +77,13 @@ export default function Home() {
     editor.on('load', () => {
       const styleManager = editor.StyleManager;
       const iframe = editor.Canvas.getFrameEl();
-      const head = iframe.contentDocument.head;
+      const head = iframe.contentDocument?.head;
       
       // Añadir el enlace a Google Fonts en el iframe
       const link = document.createElement('link');
       link.href = 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap';
       link.rel = 'stylesheet';
-      head.appendChild(link);
+      head?.appendChild(link);
     });
 
     editor.Commands.add("groq", (editor: Editor) => {

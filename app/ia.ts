@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateText } from "ai";

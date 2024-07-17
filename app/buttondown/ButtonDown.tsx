@@ -5,7 +5,7 @@ function ButtonDown(){
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (event) => {
+    const handleMouseMove = (event: any) => {
       const { clientY } = event;
       const { innerHeight } = window;
       const threshold = innerHeight - 100; // Appears when the cursor is 100px from the bottom edge

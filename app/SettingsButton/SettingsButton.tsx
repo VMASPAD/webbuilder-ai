@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
-import { getEditorInstance } from "../grapesjs";
+import getEditorInstance from "../grapesjs";
 
 interface DialogProps {
   isOpen: boolean;

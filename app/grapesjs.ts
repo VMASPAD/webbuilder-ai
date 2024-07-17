@@ -7,7 +7,7 @@ export function setEditorInstance(editor: Editor) {
   
 }
 
-export function getEditorInstance() {
+export default function getEditorInstance() {
   
   return editorInstance;
 }

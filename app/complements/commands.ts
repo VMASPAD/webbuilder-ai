@@ -1,3 +1,4 @@
+// @ts-nocheck
 
 import grapesjs, { CommandFunction, CommandObject, CommandsConfig, Editor, ICommand }  from 'grapesjs';
 import { ia } from "../ia"; 

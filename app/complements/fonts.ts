@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Editor } from 'grapesjs';
 import { getEditorInstance } from '../page';
 

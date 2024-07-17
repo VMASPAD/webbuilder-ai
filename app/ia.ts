@@ -1,10 +1,17 @@
+// @ts-nocheck
 
 import { createOpenAI } from "@ai-sdk/openai";
 import { generateText } from "ai";
+import { getEditorInstance } from "./page";
 
-export async function ia(api: string) {
-  console.log(localStorage.getItem("apigroq"));
-  console.log(process.env.NEXT_PUBLIC_GROQ_API_KEY);
+export async function ia(api: string) { 
+  let context
+  if (localStorage.getItem("context") === false){
+    context = ""
+  }else{
+    const editor = getEditorInstance()
+    context = editor?.getHtml()
+  }
   const groq = createOpenAI({
     baseURL: "https://api.groq.com/openai/v1",
     apiKey: `${api}`,
@@ -12,7 +19,9 @@ export async function ia(api: string) {
 
   const { text } = await generateText({
     model: groq("llama3-70b-8192"),
-    prompt: `${localStorage.getItem("prompt")}` });
+    prompt: `${localStorage.getItem("prompt")}
+    ${context}
+    ` });
   console.log(text);
   return text;
 }

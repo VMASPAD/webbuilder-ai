@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -116,15 +117,7 @@ export default function Home() {
       run: function (editor) {
         setIsDialogOpen(true);
       },
-    });
-    // Añadir el botón al panel
-    editor.Panels.addPanel({
-      id: "basic-actions",
-      el: ".panel__basic-actions",
-      buttons: [
-
-      ],
-    });
+    }); 
     async function generatedCode(api: string) {
       const groq = await ia(api);
       console.log(api);

@@ -1,4 +1,3 @@
-// @ts-nocheck
 "use client";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -12,12 +11,12 @@ import { blocks } from "./complements/blocks";
 import { panels } from "./complements/panels";
 import { styleManager } from "./complements/styles";
 import { deviceManager } from "./complements/deviceManager";
-import { command } from "./complements/commands";
+import { command } from "./complements/commands"; 
 function ButtonDown() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (event) => {
+    const handleMouseMove = (event: MouseEvent) => {
       const { clientY } = event;
       const { innerHeight } = window;
       const threshold = innerHeight - 160; // Appears when the cursor is 100px from the bottom edge
@@ -45,6 +44,17 @@ function ButtonDown() {
     </div>
   );
 }
+let editorInstance: Editor | null = null;
+
+export function setEditorInstance(editor) {
+  editorInstance = editor;
+  
+}
+
+export function getEditorInstance() {
+  
+  return editorInstance;
+}
 export default function Home() {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -65,51 +75,80 @@ export default function Home() {
       traitManager: {
         appendTo: ".traits-container",
       },
-      commands:command,
+      commands: command,
       blockManager: blocks.blockManager,
       panels: panels,
       styleManager: styleManager,
       deviceManager: deviceManager,
+      
     });
-     
+    setEditorInstance(editor);
+
+    editor.on('load', () => {
+      const styleManager = editor.StyleManager;
+      const iframe = editor.Canvas.getFrameEl();
+      const head = iframe.contentDocument.head;
+      
+      // Añadir el enlace a Google Fonts en el iframe
+      const link = document.createElement('link');
+      link.href = 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap';
+      link.rel = 'stylesheet';
+      head.appendChild(link);
+    });
+
     editor.Commands.add("groq", (editor: Editor) => {
-      // Usar un operador ternario para verificar si existe 'apigroq' en localStorage
+      console.log("settings");
       const groq = localStorage.getItem("apigroq")
         ? localStorage.getItem("apigroq")
         : prompt("Insert API");
 
-      // Si el usuario ingresó una nueva API, guardarla en localStorage
       if (!localStorage.getItem("apigroq") && groq) {
         localStorage.setItem("apigroq", groq);
       }
 
-      generatedCode(groq);
+      if (groq) {
+        generatedCode(groq);
+      } else {
+        console.error("El valor de groq es null o undefined");
+      }
+    });
+    editor.Commands.add("open-settings", {
+      run: function (editor) {
+        setIsDialogOpen(true);
+      },
+    });
+    // Añadir el botón al panel
+    editor.Panels.addPanel({
+      id: "basic-actions",
+      el: ".panel__basic-actions",
+      buttons: [
+
+      ],
     });
     async function generatedCode(api: string) {
       const groq = await ia(api);
       console.log(api);
 
-      // Crear un componente editable
       const component = editor.addComponents({
-        type: "wrapper", // Usar 'wrapper' en lugar de 'default' para mayor flexibilidad
-        components: groq, // Usar 'components' en lugar de 'content' para estructurar el contenido
-        editable: true, // Hacer el componente editable
-        draggable: true, // Permitir que el componente sea arrastrado
-        droppable: true, // Permitir que se puedan soltar otros componentes dentro
-        stylable: true, // Permitir que se pueda estilizar
-        resizable: true, // Permitir que se pueda redimensionar
-      })[0]; // [0] porque addComponents devuelve un array
-
-      // Seleccionar el componente recién creado
+        type: "wrapper",
+        components: groq,
+        editable: true,
+        draggable: true,
+        droppable: true,
+        stylable: true,
+        resizable: true,
+      })[0];
       editor.select(component);
 
-      // Desplazarse hasta el componente
       editor.Commands.run("core:component-select", { component });
     }
+    return () => {
+      editor.destroy();
+    };
   }, []);
   return (
     <>
-      <section className="grid grid-cols-8">
+      <section className="grid grid-cols-8 h-screen">
         <div id="blocks"></div>
         <div className="editor-row col-span-7">
           <div className="editor-canvas">

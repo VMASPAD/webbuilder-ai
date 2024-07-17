@@ -1,6 +1,7 @@
-// @ts-nocheck
-import grapesjs, { PanelsConfig } from "grapesjs";
+ 
+import grapesjs, { Editor, PanelsConfig } from "grapesjs";
 
+let editor: Editor
 export const panels: PanelsConfig = {
   defaults: [
     {
@@ -13,6 +14,12 @@ export const panels: PanelsConfig = {
           className: "btn-toggle-borders",
           label: "<u>B</u>",
           command: "sw-visibility", // Built-in command
+        },
+                {
+          id: "preview",
+          className: "fa fa-eye",
+          command: "core:preview",
+          attributes: { title: "Preview" },
         },
         {
           id: "clear-canvas",
@@ -33,13 +40,7 @@ export const panels: PanelsConfig = {
           label: `<img width="25px" src="./BiStars.svg" class="fill-white"/>`,
           command: "groq",
           context: "export-template", // For grouping context of buttons from the same panel
-        },
-        {
-          id: "preview",
-          className: "fa fa-eye",
-          command: () => editor.runCommand("preview"),
-          attributes: { title: "Preview" },
-        },
+        }, 
         {
           id: "settings",
           className: "btn-open-export",

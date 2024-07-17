@@ -49,7 +49,9 @@
   #gjs{
     height: -webkit-fill-available !important;
   }
-
+   #blocks{
+    @apply bg-slate-900
+   }
   .gjs-selected{
     @apply outline outline-offset-2 outline-1 outline-blue-500 rounded-md
   }

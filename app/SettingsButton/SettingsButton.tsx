@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
+import { getEditorInstance } from "../page"; 
+import { Editor } from "grapesjs";
+import { addCustomFont } from "../complements/fonts";
 
 interface DialogProps {
   isOpen: boolean;
@@ -19,6 +22,9 @@ interface DialogProps {
 }
 
 const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
+  console.log("settings")
+  const [fileContent, setFileContent] = useState(null);
+
   const { toast } = useToast();
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -39,9 +45,22 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
     if (api) localStorage.setItem("apigroq", api);
     if (prompt) localStorage.setItem("prompt", prompt);
   };
-  const cssArchiveSubmit = (checked: boolean) => {
-    
-  };
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setFileContent(e.target.result);
+        const editor = getEditorInstance();
+        if (editor) {
+          editor.CssComposer.addRules(e.target.result);
+        } else {
+          console.error('Editor instance not found');
+        }
+      };
+      reader.readAsText(file);
+    }
+  }; 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
@@ -59,7 +78,8 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
                   id="context-checkbox"
                 />
                 <label htmlFor="context-checkbox"> Use context at the prompt </label>
- 
+                <Separator className="my-4" />
+                <Input placeholder="Archive CSS" type="file" onChange={handleFileChange}/> 
               </div>
             </TabsContent>
             <TabsContent value="AI">

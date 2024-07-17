@@ -6,65 +6,67 @@ export const blocks: EditorConfig = {
         appendTo: "#blocks",
         blocks: [
           {
-            id: "section", // id is mandatory
-            label: "<b>Section</b>", // You can use HTML/SVG inside labels
+            id: "section",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Section</b><img width="40px" src="./icons/TablerSection.svg" class="fill-white"/></div>`,
             attributes: { class: "gjs-block-section" },
             content: `<section>
               <h1>This is a simple title</h1>
               <div>This is just a Lorem text: Lorem ipsum dolor sit amet</div>
             </section>`,
+            category: 'Layout',
           },
           {
             id: "text",
-            label: "Text",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Text</b><img width="40px" src="./icons/text.svg" class="fill-white"/></div>`,
             content: '<div data-gjs-type="text">Insert your text here</div>',
+            category: 'Basic',
           },
           {
             id: "image",
-            label: "Image",
-            // Select the component once it's dropped
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Image</b><img width="40px" src="./icons/image.svg" class="fill-white"/></div>`,
             select: true,
-            // You can pass components as a JSON instead of a simple HTML string,
-            // in this case we also use a defined component type `image`
             content: { type: "image" },
-            // This triggers `active` event on dropped components and the `image`
-            // reacts by opening the AssetManager
             activate: true,
+            category: 'Media',
           },
           {
             id: "header",
-            label: "<b>Header</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Header</b><img width="40px" src="./icons/earth.svg" class="fill-white"/></div>`,
             content: `<header>
               <h2>Header Title</h2>
               <p>Header subtitle</p>
             </header>`,
+            category: 'Layout',
           },
           {
             id: "footer",
-            label: "<b>Footer</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Footer</b><img width="40px" src="./icons/map.svg" class="fill-white"/></div>`,
             content: `<footer>
               <p>Footer content</p>
             </footer>`,
+            category: 'Layout',
           },
           {
             id: "article",
-            label: "<b>Article</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Article</b><img width="40px" src="./icons/notebook-tabs.svg" class="fill-white"/></div>`,
             content: `<article>
               <h3>Article Title</h3>
               <p>Article content</p>
             </article>`,
+            category: 'Layout',
           },
           {
             id: "aside",
-            label: "<b>Aside</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Aside</b><img width="40px" src="./icons/panel-right-open.svg" class="fill-white"/></div>`,
             content: `<aside>
               <h4>Aside Title</h4>
               <p>Aside content</p>
             </aside>`,
+            category: 'Layout',
           },
           {
             id: "nav",
-            label: "<b>Navigation</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Navigation</b><img width="40px" src="./icons/LucideNavigation.svg" class="fill-white"/></div>`,
             content: `<nav>
               <ul>
                 <li><a href="#">Link 1</a></li>
@@ -72,19 +74,21 @@ export const blocks: EditorConfig = {
                 <li><a href="#">Link 3</a></li>
               </ul>
             </nav>`,
+            category: 'Layout',
           },
           {
             id: "form",
-            label: "<b>Form</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Form</b><img width="40px" src="./icons/frame.svg" class="fill-white"/></div>`,
             content: `<form>
               <input type="text" placeholder="Name"/>
               <input type="email" placeholder="Email"/>
               <button type="submit">Submit</button>
             </form>`,
+            category: 'Forms',
           },
           {
             id: "table",
-            label: "<b>Table</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Table</b><img width="40px" src="./icons/table.svg" class="fill-white"/></div>`,
             content: `<table>
               <thead>
                 <tr><th>Heading 1</th><th>Heading 2</th></tr>
@@ -94,87 +98,100 @@ export const blocks: EditorConfig = {
                 <tr><td>Data 3</td><td>Data 4</td></tr>
               </tbody>
             </table>`,
+            category: 'Basic',
           },
           {
             id: "list",
-            label: "<b>List</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>List</b><img width="40px" src="./icons/list.svg" class="fill-white"/></div>`,
             content: `<ul>
               <li>Item 1</li>
               <li>Item 2</li>
               <li>Item 3</li>
             </ul>`,
+            category: 'Basic',
           },
           {
             id: "blockquote",
-            label: "<b>Blockquote</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Blockquote</b><img width="40px" src="./icons/message-square-quote.svg" class="fill-white"/></div>`,
             content: `<blockquote>
               <p>This is a blockquote</p>
             </blockquote>`,
+            category: 'Basic',
           },
           {
             id: "figure",
-            label: "<b>Figure</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Figure</b><img width="40px" src="./icons/images.svg" class="fill-white"/></div>`,
             content: `<figure>
               <img src="https://via.placeholder.com/150" alt="Placeholder image">
               <figcaption>Figure caption</figcaption>
             </figure>`,
+            category: 'Media',
           },
           {
             id: "button",
-            label: "<b>Button</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Button</b><img width="40px" src="./icons/circle-arrow-out-up-left.svg" class="fill-white"/></div>`,
             content: `<button>Click Me</button>`,
+            category: 'Basic',
           },
           {
             id: "iframe",
-            label: "<b>iFrame</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>iFrame</b><img width="40px" src="./icons/newspaper.svg" class="fill-white"/></div>`,
             content: `<iframe src="https://www.example.com" width="300" height="200"></iframe>`,
+            category: 'Media',
           },
           {
             id: "video",
-            label: "<b>Video</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Video</b><img width="40px" src="./icons/monitor-play.svg" class="fill-white"/></div>`,
             content: `<video controls>
               <source src="https://www.example.com/video.mp4" type="video/mp4">
               Your browser does not support the video tag.
             </video>`,
+            category: 'Media',
           },
           {
             id: "audio",
-            label: "<b>Audio</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Audio</b><img width="40px" src="./icons/audio-lines.svg" class="fill-white"/></div>`,
             content: `<audio controls>
               <source src="https://www.example.com/audio.mp3" type="audio/mpeg">
               Your browser does not support the audio element.
             </audio>`,
+            category: 'Media',
           },
           {
             id: "svg",
-            label: "<b>SVG</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>SVG</b><img width="40px" src="./icons/TablerSvg.svg" class="fill-white"/></div>`,
             content: `<svg width="100" height="100">
               <circle cx="50" cy="50" r="40" stroke="black" stroke-width="3" fill="red" />
             </svg>`,
+            category: 'Media',
           },
           {
             id: "progress",
-            label: "<b>Progress</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Progress</b><img width="40px" src="./icons/loader.svg" class="fill-white"/></div>`,
             content: `<progress value="50" max="100">50%</progress>`,
+            category: 'Basic',
           },
           {
             id: "meter",
-            label: "<b>Meter</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Meter</b><img width="40px" src="./icons/ruler.svg" class="fill-white"/></div>`,
             content: `<meter value="0.6">60%</meter>`,
+            category: 'Basic',
           },
           {
             id: "details",
-            label: "<b>Details</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Details</b><img width="40px" src="./icons/book-text.svg" class="fill-white"/></div>`,
             content: `<details>
               <summary>Details</summary>
               <p>Details content</p>
             </details>`,
+            category: 'Basic',
           },
           {
             id: "code",
-            label: "<b>Code</b>",
+            label: `<div class="flex flex-col justify-center items-center gap-3"><b>Code</b><img width="40px" src="./icons/code.svg" class="fill-white"/></div>`,
             content: `<pre><code>const a = 'Hello World';</code></pre>`,
+            category: 'Basic',
           },
         ],
-      }
-}
+    },
+};

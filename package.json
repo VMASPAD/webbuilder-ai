@@ -21,6 +21,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "grapesjs": "^0.21.12",
+    "monaco-editor": "^0.50.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",

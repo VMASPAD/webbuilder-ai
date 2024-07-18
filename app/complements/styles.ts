@@ -8,12 +8,38 @@ const displayValues = [
   'run-in', 'inherit', 'initial', 'revert', 'unset'
 ];
 
+const getStoredFonts = (): { value: string; name: string }[] => {
+  const storedFonts = JSON.parse(localStorage.getItem('fonts') || '[]');
+  return storedFonts
+    .filter((font: { active: boolean }) => font.active)
+    .map((font: { name: string }) => ({
+      value: `"${font.name}", sans-serif`,
+      name: font.name,
+    }));
+};
+
+const defaultFonts = [
+  { value: "Arial, Helvetica, sans-serif", name: "Arial" },
+  { value: "Arial Black, Gadget, sans-serif", name: "Arial Black" },
+  { value: "Comic Sans MS, cursive", name: "Comic Sans MS" },
+  { value: "Courier New, Courier, monospace", name: "Courier New" },
+  { value: "Georgia, serif", name: "Georgia" },
+  { value: "Helvetica, serif", name: "Helvetica" },
+  { value: "Impact, Charcoal, sans-serif", name: "Impact" },
+  { value: "Lucida Sans Unicode, Lucida Grande, sans-serif", name: "Lucida Sans Unicode" },
+  { value: "Tahoma, Geneva, sans-serif", name: "Tahoma" },
+  { value: "Times New Roman, Times, serif", name: "Times New Roman" },
+  { value: "Trebuchet MS, Helvetica, sans-serif", name: "Trebuchet MS" },
+  { value: "Verdana, Geneva, sans-serif", name: "Verdana" },
+  { value: '"Roboto", sans-serif', name: "Roboto" },
+];
+
 export const styleManager: StyleManagerConfig = {
   appendTo: ".styles-container",
   sectors: [
     {
       name: "General",
-      open: !1,
+      open: false,
       buildProps: [
         "display",
         "float",
@@ -64,7 +90,7 @@ export const styleManager: StyleManagerConfig = {
     },
     {
       name: "Typography",
-      open: !1,
+      open: false,
       buildProps: [
         "font-family",
         "font-size",
@@ -81,76 +107,24 @@ export const styleManager: StyleManagerConfig = {
           property: "font-family",
           type: "select",
           defaults: "Arial",
-          options: [
-            {
-              value: "Arial, Helvetica, sans-serif", name: "Arial",
-              id: ""
-            },
-            {
-              value: "Arial Black, Gadget, sans-serif", name: "Arial Black",
-              id: ""
-            },
-            {
-              value: "Comic Sans MS, cursive", name: "Comic Sans MS",
-              id: ""
-            },
-            {
-              value: "Courier New, Courier, monospace", name: "Courier New",
-              id: ""
-            },
-            {
-              value: "Georgia, serif", name: "Georgia",
-              id: ""
-            },
-            {
-              value: "Helvetica, serif", name: "Helvetica",
-              id: ""
-            },
-            {
-              value: "Impact, Charcoal, sans-serif", name: "Impact",
-              id: ""
-            },
-            {
-              value: "Lucida Sans Unicode, Lucida Grande, sans-serif",
-              name: "Lucida Sans Unicode",
-              id: ""
-            },
-            {
-              value: "Tahoma, Geneva, sans-serif", name: "Tahoma",
-              id: ""
-            },
-            {
-              value: "Times New Roman, Times, serif", name: "Times New Roman",
-              id: ""
-            },
-            {
-              value: "Trebuchet MS, Helvetica, sans-serif",
-              name: "Trebuchet MS",
-              id: ""
-            },
-            {
-              value: "Verdana, Geneva, sans-serif", name: "Verdana",
-              id: ""
-            },
-            {
-              value: '"Roboto", sans-serif', name: "Roboto",
-              id: ""
-            },
-          ],
+          options: [...defaultFonts, ...getStoredFonts()],
         },
         // ... otras propiedades de tipografía ...
       ],
     },
     {
-      name:'Grid',
-      open:!1,
-      buildProps: ["grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", "grid-column", "grid-column-end", "grid-column-gap", "grid-column-start", "grid-gap", "grid-row", "grid-row-end", "grid-row-gap", "grid-row-start", "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows",],
-       
-
+      name: 'Grid',
+      open: false,
+      buildProps: [
+        "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", 
+        "grid-column", "grid-column-end", "grid-column-gap", "grid-column-start", 
+        "grid-gap", "grid-row", "grid-row-end", "grid-row-gap", "grid-row-start", 
+        "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows",
+      ],
     },
     {
       name: "Decorations",
-      open: !1,
+      open: false,
       properties: [
         "background-color",
         "border-radius",
@@ -161,8 +135,18 @@ export const styleManager: StyleManagerConfig = {
     },
     {
       name: "Extra",
-      open: !1,
+      open: false,
       properties: ["opacity", "transition", "transform"],
     },
   ],
+};
+
+export const updateTypographyOptions = (editor: grapesjs.Editor) => {
+  const typographySector = editor.StyleManager.getSector('Typography');
+  if (typographySector) {
+    const fontProperty = typographySector.getProperty('font-family');
+    if (fontProperty) {
+      fontProperty.set('options', [...defaultFonts, ...getStoredFonts()]);
+    }
+  }
 };

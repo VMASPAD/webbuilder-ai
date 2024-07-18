@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import grapesjs, { Editor } from "grapesjs";
 import "./grapesjs.css";
 import { Textarea } from "@/components/ui/textarea";
-import "./main.scss";
+import "./main.scss"; 
 import { ia } from "./ia";
 import SettingsButton from "@/app/SettingsButton/SettingsButton";
 import { blocks } from "./complements/blocks";
@@ -38,7 +38,7 @@ function ButtonDown() {
         isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
       }`}
     >
-      <div className="bg-gray-900 text-white p-4 rounded-lg shadow-lg">
+      <div className="bg-foreground text-white dark:text-primary p-4 rounded-lg shadow-lg">
         <div className="panel__basic-actions"></div>
         <div className="panel__devices"></div>
       </div>
@@ -130,17 +130,32 @@ export default function Home() {
   }, []);
   return (
     <>
-      <section className="grid grid-cols-8 h-screen">
-        <div id="blocks"></div>
-        <div className="editor-row col-span-7">
-          <div className="editor-canvas">
-            <div id="gjs"></div>
+<div className="h-screen flex flex-col overflow-hidden">
+      <section className="flex-grow grid grid-cols-8 overflow-hidden">
+        <div id="blocks" className="overflow-y-auto">
+          {/* Contenido de blocks */}
+        </div>
+        <div className="editor-row col-span-7 flex overflow-hidden">
+          <div className="editor-canvas flex-grow overflow-hidden">
+            <div id="gjs" className="h-full overflow-auto">
+              {/* Contenido del editor */}
+            </div>
           </div>
-          <div className="panel__right">
-            <div className="panel__switcher"></div>
-            <div className="layers-container"></div>
-            <div className="styles-container"></div>
-            <div className="traits-container"></div>
+          <div className="panel__right w-64 flex flex-col overflow-hidden">
+            <div className="panel__switcher">
+              {/* Contenido del switcher */}
+            </div>
+            <div className="flex-grow flex flex-col overflow-hidden">
+              <div className="layers-container flex-grow overflow-y-auto">
+                {/* Contenido de layers */}
+              </div>
+              <div className="styles-container flex-grow overflow-y-auto">
+                {/* Contenido de styles */}
+              </div>
+              <div className="traits-container flex-grow overflow-y-auto">
+                {/* Contenido de traits */}
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -148,8 +163,8 @@ export default function Home() {
         isOpen={isDialogOpen}
         onClose={() => setIsDialogOpen(false)}
       />
-
       <ButtonDown />
+      </div>
     </>
   );
 }

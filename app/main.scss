@@ -7,7 +7,7 @@
     position: relative;
   }
   .gjs-one-bg{
-    @apply bg-slate-900
+    @apply bg-foreground
   }
   .fill-white-container {
     color: white; /* Define el color para el contenedor */
@@ -50,17 +50,26 @@
     height: 100vh !important;
   }
    #blocks{
-    @apply bg-slate-900
+    @apply bg-background
    }
   .gjs-selected{
-    @apply outline outline-offset-2 outline-1 outline-blue-500 rounded-md
+    @apply outline  outline-1 outline-blue-500 rounded-md
   }
   .gjs-hovered{
-    @apply outline outline-offset-2 outline-1 outline-blue-500 rounded-md
+    @apply outline   outline-1 outline-blue-500 rounded-md
   }
   .gjs-toolbar{
     @apply rounded-md 
   }
   .gjs-badge{
     @apply rounded-md absolute top-5
+  }
+  .invert {
+    filter: invert(1);
+  }
+  .dark .invert {
+    filter: invert(0);
+  }
+  .gjs-title{
+    @apply dark:text-black !font-bold
   }

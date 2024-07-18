@@ -13,15 +13,31 @@ import { useToast } from "@/components/ui/use-toast";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Checkbox } from "@/components/ui/checkbox";
 import getEditorInstance from "../grapesjs";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import FontManagement from "../complements/FontManagement";
 
 interface DialogProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const SettingsButton = ({ isOpen, onClose }: DialogProps) => { 
-  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(null);
-
+const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
+  const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
+    null
+  );
+  const getPrompt =
+    localStorage.getItem("prompt") === undefined
+      ? "Create a prompt"
+      : localStorage.getItem("prompt");
   const { toast } = useToast();
   const [checked, setChecked] = useState<boolean>(false);
 
@@ -37,7 +53,8 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
 
   const changeData = () => {
     const api = (document.getElementById("API") as HTMLInputElement)?.value;
-    const prompt = (document.getElementById("prompt") as HTMLInputElement)?.value;
+    const prompt = (document.getElementById("prompt") as HTMLInputElement)
+      ?.value;
 
     if (api) localStorage.setItem("apigroq", api);
     if (prompt) localStorage.setItem("prompt", prompt);
@@ -68,6 +85,8 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
             <TabsList>
               <TabsTrigger value="Settings">Settings</TabsTrigger>
               <TabsTrigger value="AI">AI</TabsTrigger>
+              <TabsTrigger value="Fonts">Fonts</TabsTrigger>
+              <TabsTrigger value="Theme">Theme</TabsTrigger>
             </TabsList>
             <TabsContent value="Settings">
               <div className="my-10">
@@ -93,13 +112,14 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
               <DialogTitle>Change prompt or API (Groq).</DialogTitle>
               <DialogDescription>
                 <p>
-                  Change the API or prompt to generate your own response with your access key
+                  Change the API or prompt to generate your own response with
+                  your access key
                 </p>
               </DialogDescription>
               <Separator className="my-4" />
               <Input placeholder="API" id="API" />
               <Separator className="my-4" />
-              <Input placeholder="prompt" id="prompt" />
+              <Textarea placeholder={getPrompt} id="prompt" />
               <Separator className="my-4" />
               <Button
                 className="bg-slate-900"
@@ -113,6 +133,14 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
               >
                 Change
               </Button>
+            </TabsContent>
+            <TabsContent value="Fonts">
+              <DialogTitle>Font Management</DialogTitle>
+              <FontManagement />
+            </TabsContent>
+            <TabsContent value="Theme">
+              <DialogTitle>Font Management</DialogTitle>
+              <Textarea />
             </TabsContent>
           </Tabs>
         </DialogHeader>

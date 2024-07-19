@@ -34,6 +34,12 @@ export const panels: PanelsConfig  = {
           command: "export-template",
           context: "export-template",
         },
+        { 
+          id: 'open-code-editor', 
+          command: 'open-code-editor',
+          attributes: { title: 'Abrir Code' },
+          label: `<img width="25px" src="./MdiCodeBlockTags.svg" class="invert dark:filter invert-0"/>`, 
+        },
         {
           id: "ia",
           className: "btn-open-export",
@@ -64,8 +70,8 @@ export const panels: PanelsConfig  = {
             console.log(editor);
             editor.Modal.setTitle("Components JSON")
               .setContent(
-                `<textarea style="width:100%; height: 250px;">
-                ${JSON.stringify(editor.getComponents())}
+                `<textarea style="width:100%;" class="text-black h-96">
+                ${JSON.stringify(editor.getComponents(),0,2)}
               </textarea>`
               )
               .open();
@@ -149,12 +155,6 @@ export const panels: PanelsConfig  = {
           label: `<img width="25px" src="./LucideTableProperties.svg" class="invert dark:filter invert-0"/>`,
           command: "show-traits",
           togglable: false,
-        },
-        { 
-          id: 'open-code-editor', 
-          command: 'open-code-editor',
-          attributes: { title: 'Abrir Code' },
-          label: `<img width="25px" src="./GravityUiCode.svg" class="invert dark:filter invert-0"/>`, 
         },
       ],
     },

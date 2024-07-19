@@ -14,8 +14,9 @@ import { deviceManager } from "./complements/deviceManager";
 import { command } from "./complements/commands";
 import { setEditorInstance } from "./grapesjs";
 import parserPostCSS from "grapesjs-parser-postcss";
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import MonacoEditor from "./complements/editor";
+import cssSearch from "./complements/css-search";
 
 function ButtonDown() {
   const [isVisible, setIsVisible] = useState(false);
@@ -58,7 +59,7 @@ export default function Home() {
       fromElement: true,
       height: "100vh",
       width: "auto",
-      plugins: [parserPostCSS],
+      plugins: [parserPostCSS,(editor) => cssSearch(editor)],
       storageManager: true,
       selectorManager: {
         appendTo: ".styles-container",
@@ -74,7 +75,7 @@ export default function Home() {
       panels: panels,
       styleManager: styleManager,
       deviceManager: deviceManager,
-      codeManager: {},
+      allowScripts: 1,  // Permitir scripts 
     });
     setEditorInstance(editor);
 
@@ -137,16 +138,14 @@ export default function Home() {
         editor.stopCommand("core:preview");
       },
     });
-     editor.Commands.add("open-code-editor", {
+    editor.Commands.add('open-code-editor', {
       run(editor) {
         const modal = editor.Modal;
         modal.setTitle('My Custom Modal');
         modal.setContent(`
           <div id="modal-content" style="padding: 20px;">
-            <h2>Bienvenido al Modal</h2>
-            <div id="monaco-container" style="width:100%; height:400px;"></div>
-            <p>Este es un ejemplo de cómo abrir un modal usando un comando personalizado en GrapesJS.</p>
-            <button id="closeModal" style="padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Cerrar Modal</button>
+            <h2>Code Editor</h2>
+            <div id="monaco-container" style="width:100%; height:100%;"></div>  
           </div>
         `);
   
@@ -157,14 +156,9 @@ export default function Home() {
         const monacoContainer = document.getElementById('monaco-container');
   
         if (monacoContainer) {
-          ReactDOM.render(<MonacoEditor />, monacoContainer);
-        }
-  
-        // Add event listener to close the modal
-        const closeModalButton = document.getElementById('closeModal');
-        closeModalButton.addEventListener('click', () => {
-          modal.close();
-        });
+          const root = createRoot(monacoContainer);
+          root.render(<MonacoEditor />);
+        } 
       }
     });
   
@@ -201,7 +195,7 @@ export default function Home() {
                 </div>
                 <div className="traits-container flex-grow overflow-y-auto">
                   {/* Contenido de traits */}
-                </div> 
+                </div>  
               </div>
             </div>
           </div>

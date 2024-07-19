@@ -4,15 +4,19 @@ import { useEffect, useState } from "react";
 import grapesjs, { Editor } from "grapesjs";
 import "./grapesjs.css";
 import { Textarea } from "@/components/ui/textarea";
-import "./main.scss"; 
+import "./main.scss";
 import { ia } from "./ia";
 import SettingsButton from "@/app/SettingsButton/SettingsButton";
 import { blocks } from "./complements/blocks";
 import { panels } from "./complements/panels";
 import { styleManager } from "./complements/styles";
 import { deviceManager } from "./complements/deviceManager";
-import { command } from "./complements/commands"; 
+import { command } from "./complements/commands";
 import { setEditorInstance } from "./grapesjs";
+import parserPostCSS from "grapesjs-parser-postcss";
+import ReactDOM from 'react-dom';
+import MonacoEditor from "./complements/editor";
+
 function ButtonDown() {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -54,8 +58,8 @@ export default function Home() {
       fromElement: true,
       height: "100vh",
       width: "auto",
+      plugins: [parserPostCSS],
       storageManager: true,
-
       selectorManager: {
         appendTo: ".styles-container",
       },
@@ -70,24 +74,12 @@ export default function Home() {
       panels: panels,
       styleManager: styleManager,
       deviceManager: deviceManager,
-      
+      codeManager: {},
     });
     setEditorInstance(editor);
 
-    editor.on('load', () => {
-      const styleManager = editor.StyleManager;
-      const iframe = editor.Canvas.getFrameEl();
-      const head = iframe.contentDocument?.head;
-      
-      // Añadir el enlace a Google Fonts en el iframe
-      const link = document.createElement('link');
-      link.href = 'https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap';
-      link.rel = 'stylesheet';
-      head?.appendChild(link);
-    });
-
     editor.Commands.add("groq", (editor: Editor) => {
-      console.log("settings");
+      console.log(editor.getHtml());
       const groq = localStorage.getItem("apigroq")
         ? localStorage.getItem("apigroq")
         : prompt("Insert API");
@@ -106,7 +98,7 @@ export default function Home() {
       run: function (editor) {
         setIsDialogOpen(true);
       },
-    }); 
+    });
     async function generatedCode(api: string) {
       const groq = await ia(api);
       console.log(api);
@@ -124,50 +116,103 @@ export default function Home() {
 
       editor.Commands.run("core:component-select", { component });
     }
+    editor.Commands.add("preview", {
+      run(editor) {
+        const blocks = document.getElementById("blocks");
+        const allUi = document.getElementById("allUi");
+        const panel = document.querySelector(".panel__right");
+        blocks.style.display = "none";
+        allUi.style.gridTemplateColumns = "repeat(1, minmax(0, 1fr))";
+        panel.style.display = "none";
+        console.log(blocks);
+        editor.runCommand("core:preview");
+      },
+      stop(editor) {
+        const blocks = document.getElementById("blocks");
+        const allUi = document.getElementById("allUi");
+        const panel = document.querySelector(".panel__right");
+        panel.style.display = "block";
+        allUi.style.gridTemplateColumns = "repeat(8, minmax(0, 1fr))";
+        blocks.style.display = "block";
+        editor.stopCommand("core:preview");
+      },
+    });
+     editor.Commands.add("open-code-editor", {
+      run(editor) {
+        const modal = editor.Modal;
+        modal.setTitle('My Custom Modal');
+        modal.setContent(`
+          <div id="modal-content" style="padding: 20px;">
+            <h2>Bienvenido al Modal</h2>
+            <div id="monaco-container" style="width:100%; height:400px;"></div>
+            <p>Este es un ejemplo de cómo abrir un modal usando un comando personalizado en GrapesJS.</p>
+            <button id="closeModal" style="padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer;">Cerrar Modal</button>
+          </div>
+        `);
+  
+        // Show the modal
+        modal.open();
+  
+        // Render the MonacoEditor component into the placeholder
+        const monacoContainer = document.getElementById('monaco-container');
+  
+        if (monacoContainer) {
+          ReactDOM.render(<MonacoEditor />, monacoContainer);
+        }
+  
+        // Add event listener to close the modal
+        const closeModalButton = document.getElementById('closeModal');
+        closeModalButton.addEventListener('click', () => {
+          modal.close();
+        });
+      }
+    });
+  
     return () => {
       editor.destroy();
     };
   }, []);
   return (
     <>
-<div className="h-screen flex flex-col overflow-hidden">
-      <section className="flex-grow grid grid-cols-8 overflow-hidden">
-        <div id="blocks" className="overflow-y-auto">
-          {/* Contenido de blocks */}
-        </div>
-        <div className="editor-row col-span-7 flex overflow-hidden">
-          <div className="editor-canvas flex-grow overflow-hidden">
-            <div id="gjs" className="h-full overflow-auto">
-              {/* Contenido del editor */}
+      <div className="h-screen flex flex-col overflow-hidden">
+        <section
+          id="allUi"
+          className="flex-grow grid grid-cols-8 overflow-hidden"
+        >
+          <div id="blocks" className="overflow-y-auto bg-foreground">
+            {/* Contenido de blocks */}
+          </div>
+          <div className="editor-row col-span-7 flex overflow-hidden">
+            <div className="editor-canvas flex-grow overflow-hidden">
+              <div id="gjs" className="h-full overflow-auto">
+                {/* Contenido del editor */}
+              </div>
+            </div>
+            <div className="panel__right w-64 flex flex-col overflow-hidden gap-3">
+              <div className="panel__switcher">
+                {/* Contenido del switcher */}
+              </div>
+              <div className="flex-grow flex flex-col overflow-hidden">
+                <div className="layers-container flex-grow overflow-y-auto">
+                  {/* Contenido de layers */}
+                </div>
+                <div className="styles-container flex-grow overflow-y-auto">
+                  {/* Contenido de styles */}
+                </div>
+                <div className="traits-container flex-grow overflow-y-auto">
+                  {/* Contenido de traits */}
+                </div> 
+              </div>
             </div>
           </div>
-          <div className="panel__right w-64 flex flex-col overflow-hidden">
-            <div className="panel__switcher">
-              {/* Contenido del switcher */}
-            </div>
-            <div className="flex-grow flex flex-col overflow-hidden">
-              <div className="layers-container flex-grow overflow-y-auto">
-                {/* Contenido de layers */}
-              </div>
-              <div className="styles-container flex-grow overflow-y-auto">
-                {/* Contenido de styles */}
-              </div>
-              <div className="traits-container flex-grow overflow-y-auto">
-                {/* Contenido de traits */}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <SettingsButton
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-      />
-      <ButtonDown />
+        </section>
+        <SettingsButton
+          isOpen={isDialogOpen}
+          onClose={() => setIsDialogOpen(false)}
+        />
+        <ButtonDown />
       </div>
     </>
   );
 }
-/* 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
-Quiero que me generes un codigo de html aleatorio de lo que tu quieras, solo esribre el codigo html y nada mas solo CODIGO (ademas quiero que esribas solo la etiqueta style y luego solo el contenido que iria en la etiqueta body y no quiero que pongas las ``` al principio y al final del codigo) y recuerda que en la respuesta tiene que estar solo el codigo html
-*/
+/* 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 */

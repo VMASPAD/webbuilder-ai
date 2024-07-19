@@ -18,7 +18,7 @@ export const panels: PanelsConfig  = {
                 {
           id: "preview",
           className: "fa fa-eye dark:text-black",
-          command: "core:preview",
+          command: "preview",
           attributes: { title: "Preview" },
         },
         {
@@ -149,6 +149,12 @@ export const panels: PanelsConfig  = {
           label: `<img width="25px" src="./LucideTableProperties.svg" class="invert dark:filter invert-0"/>`,
           command: "show-traits",
           togglable: false,
+        },
+        { 
+          id: 'open-code-editor', 
+          command: 'open-code-editor',
+          attributes: { title: 'Abrir Code' },
+          label: `<img width="25px" src="./GravityUiCode.svg" class="invert dark:filter invert-0"/>`, 
         },
       ],
     },

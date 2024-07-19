@@ -49,20 +49,17 @@
   #gjs{
     height: 100vh !important;
   }
-   #blocks{
-    @apply bg-background
-   }
   .gjs-selected{
-    @apply outline  outline-1 outline-blue-500 rounded-md
+    @apply outline  outline-1 outline-primary   
   }
   .gjs-hovered{
-    @apply outline   outline-1 outline-blue-500 rounded-md
+    @apply outline   outline-1 outline-primary  
   }
   .gjs-toolbar{
-    @apply rounded-md 
+    @apply rounded-[--radius]
   }
   .gjs-badge{
-    @apply rounded-md absolute top-5
+    @apply rounded-[--radius] 
   }
   .invert {
     filter: invert(1);
@@ -72,4 +69,70 @@
   }
   .gjs-title{
     @apply dark:text-black !font-bold
+  }  
+
+  .gjs-block{
+    @apply shadow-sm shadow-primary dark:shadow-primary-foreground
+  }
+  .gjs-four-color{
+    @apply text-primary
+  }
+  .gjs-toolbar{
+    @apply bg-primary
+  }
+  span {
+    @apply font-medium dark:text-secondary
+  }
+  .gjs-label{
+    @apply font-medium  dark:text-secondary
+  }
+  .gjs-sm-sector-label{
+    @apply font-medium dark:text-secondary
+  }
+  .gjs-three-bg{
+    @apply bg-primary dark:bg-secondary
+  }
+  .gjs-field {
+    @apply dark:bg-primary bg-secondary-foreground
+  }
+  .gjs-radio-item-label{
+    @apply font-medium
+  }
+  .gjs-layer-name{
+    @apply dark:text-secondary
+  }
+  .gjs-layer-vis{
+    @apply dark:text-black
+  }
+  .gjs-layer-caret{
+    @apply dark:text-black
+  }
+  .gjs-layer-count{
+    @apply dark:text-black font-medium
+  }
+  .gjs-layer-move{
+    @apply dark:text-black
+  }
+  .gjs-sm-sector-caret{
+    @apply dark:text-black
+  }
+  .gjs-clm-header-label{
+    @apply dark:text-black
+  }
+  .gjs-clm-label-sel{
+    @apply dark:text-black 
+  }
+  .gjs-color-main, .gjs-sm-stack #gjs-sm-add, .gjs-off-prv{
+    @apply dark:text-black 
+  }
+  .gjs-fields{
+    @apply gap-3
+  }
+  .gjs-no-touch-actions{
+    @apply dark:text-black 
+
+  }
+  input{
+    @apply dark:text-black 
+
   }

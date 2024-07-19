@@ -135,7 +135,7 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
               </Button>
             </TabsContent>
             <TabsContent value="Fonts">
-              <DialogTitle>Font Management</DialogTitle>
+              <DialogTitle>Theme Management</DialogTitle>
               <FontManagement />
             </TabsContent>
             <TabsContent value="Theme">

@@ -1114,12 +1114,12 @@ span.CodeMirror-selectedtext {
     --gjs-main-light-color: rgba(255, 255, 255, 0.1);
     --gjs-secondary-light-color: rgba(255, 255, 255, 0.7);
     --gjs-soft-light-color: rgba(255, 255, 255, 0.015);
-    --gjs-color-blue: #3b97e3;
+    --gjs-color-blue: #e37e3b;
     --gjs-color-red: #dd3636;
     --gjs-color-yellow: #ffca6f;
     --gjs-color-green: #62c462;
     --gjs-left-width: 15%;
-    --gjs-color-highlight: #71b7f1;
+    --gjs-color-highlight: #e37e3b;
     --gjs-color-warn: #ffca6f;
     --gjs-handle-margin: -5px;
     --gjs-light-border: rgba(255, 255, 255, 0.05);

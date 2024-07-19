@@ -115,12 +115,175 @@ export const styleManager: StyleManagerConfig = {
     {
       name: 'Grid',
       open: false,
-      buildProps: [
-        "grid", "grid-area", "grid-auto-columns", "grid-auto-flow", "grid-auto-rows", 
-        "grid-column", "grid-column-end", "grid-column-gap", "grid-column-start", 
-        "grid-gap", "grid-row", "grid-row-end", "grid-row-gap", "grid-row-start", 
-        "grid-template", "grid-template-areas", "grid-template-columns", "grid-template-rows",
-      ],
+      properties: [
+        {
+          name: 'Display',
+          property: 'display',
+          type: 'select',
+          defaults: 'block',
+          list: [
+            { value: 'block' },
+            { value: 'inline' },
+            { value: 'inline-block' },
+            { value: 'flex' },
+            { value: 'grid' }
+          ]
+        },
+        {
+          name: 'Grid Template Columns',
+          property: 'grid-template-columns',
+          type: 'composite',
+          properties: [
+            {
+              name: 'Type',
+              property: 'grid-template-columns-type',
+              type: 'select',
+              defaults: 'repeat',
+              list: [
+                { value: 'repeat' },
+                { value: 'minmax' },
+                { value: 'custom' }
+              ]
+            },
+            {
+              name: 'Value',
+              property: 'grid-template-columns-value',
+              type: 'text'
+            }
+          ]
+        },
+        {
+          name: 'Grid Template Rows',
+          property: 'grid-template-rows',
+          type: 'composite',
+          properties: [
+            {
+              name: 'Type',
+              property: 'grid-template-rows-type',
+              type: 'select',
+              defaults: 'repeat',
+              list: [
+                { value: 'repeat' },
+                { value: 'minmax' },
+                { value: 'custom' }
+              ]
+            },
+            {
+              name: 'Value',
+              property: 'grid-template-rows-value',
+              type: 'text'
+            }
+          ]
+        },
+        {
+          name: 'Grid Auto Columns',
+          property: 'grid-auto-columns',
+          type: 'select',
+          defaults: 'auto',
+          list: [
+            { value: 'auto' },
+            { value: 'min-content' },
+            { value: 'max-content' },
+            { value: 'minmax(min-content, max-content)' }
+          ]
+        },
+        {
+          name: 'Grid Auto Rows',
+          property: 'grid-auto-rows',
+          type: 'select',
+          defaults: 'auto',
+          list: [
+            { value: 'auto' },
+            { value: 'min-content' },
+            { value: 'max-content' },
+            { value: 'minmax(min-content, max-content)' }
+          ]
+        },
+        {
+          name: 'Grid Auto Flow',
+          property: 'grid-auto-flow',
+          type: 'select',
+          defaults: 'row',
+          list: [
+            { value: 'row' },
+            { value: 'column' },
+            { value: 'row dense' },
+            { value: 'column dense' }
+          ]
+        },
+        {
+          name: 'Grid Column Gap',
+          property: 'grid-column-gap',
+          type: 'slider',
+          defaults: '0',
+          min: 0,
+          max: 50,
+          step: 1
+        },
+        {
+          name: 'Grid Row Gap',
+          property: 'grid-row-gap',
+          type: 'slider',
+          defaults: '0',
+          min: 0,
+          max: 50,
+          step: 1
+        },
+        {
+          name: 'Justify Items',
+          property: 'justify-items',
+          type: 'select',
+          defaults: 'stretch',
+          list: [
+            { value: 'start' },
+            { value: 'end' },
+            { value: 'center' },
+            { value: 'stretch' }
+          ]
+        },
+        {
+          name: 'Align Items',
+          property: 'align-items',
+          type: 'select',
+          defaults: 'stretch',
+          list: [
+            { value: 'start' },
+            { value: 'end' },
+            { value: 'center' },
+            { value: 'stretch' }
+          ]
+        },
+        {
+          name: 'Justify Content',
+          property: 'justify-content',
+          type: 'select',
+          defaults: 'start',
+          list: [
+            { value: 'start' },
+            { value: 'end' },
+            { value: 'center' },
+            { value: 'stretch' },
+            { value: 'space-around' },
+            { value: 'space-between' },
+            { value: 'space-evenly' }
+          ]
+        },
+        {
+          name: 'Align Content',
+          property: 'align-content',
+          type: 'select',
+          defaults: 'stretch',
+          list: [
+            { value: 'start' },
+            { value: 'end' },
+            { value: 'center' },
+            { value: 'stretch' },
+            { value: 'space-around' },
+            { value: 'space-between' },
+            { value: 'space-evenly' }
+          ]
+        }
+      ]
     },
     {
       name: "Decorations",
@@ -131,6 +294,14 @@ export const styleManager: StyleManagerConfig = {
         "border",
         "box-shadow",
         "background",
+      ],
+    },
+    {
+      name: "Border",
+      open: false,
+      properties: [ 
+        "border-radius",
+        "border", 
       ],
     },
     {

@@ -33,17 +33,23 @@ interface DialogProps {
 const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
   const [fileContent, setFileContent] = useState<string | ArrayBuffer | null>(
     null
-  );
-  const getPrompt =
-    localStorage.getItem("prompt") === undefined
-      ? "Create a prompt"
-      : localStorage.getItem("prompt");
+  );  
+  const [prompt, setPrompt] = useState("Create a prompt");
+
+  const getPrompt = (): string => {
+    const storedPrompt = localStorage.getItem("prompt");
+    return storedPrompt !== null ? storedPrompt : "Create a prompt";
+  };
   const { toast } = useToast();
   const [checked, setChecked] = useState<boolean>(false);
 
   useEffect(() => {
     const storedValue = localStorage.getItem("context");
     setChecked(storedValue === "true");
+    const storedPrompt = localStorage.getItem("prompt");
+    if (storedPrompt !== null) {
+      setPrompt(storedPrompt);
+    }
   }, []);
 
   const handleCheckboxChange = (checked: boolean) => {
@@ -119,7 +125,7 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
               <Separator className="my-4" />
               <Input placeholder="API" id="API" />
               <Separator className="my-4" />
-              <Textarea placeholder={getPrompt} id="prompt" />
+              <Textarea placeholder={prompt} id="prompt" />
               <Separator className="my-4" />
               <Button
                 className="bg-slate-900"

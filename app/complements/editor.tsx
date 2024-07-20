@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Editor, useMonaco } from '@monaco-editor/react';
@@ -18,9 +18,9 @@ const MonacoEditor = () => {
   };
 
   const handleEditorDidMount = (editor: any, language: any) => {
-    switch (language) {
-      case 'html':
-        htmlEditorRef.current = editor;
+    switch(language) {
+      case 'html': 
+        htmlEditorRef.current = editor; 
         break;
       case 'css':
         cssEditorRef.current = editor;
@@ -28,26 +28,25 @@ const MonacoEditor = () => {
       case 'javascript':
         jsEditorRef.current = editor;
         break;
-      default:
-        break;
-    }
+    } 
     setTimeout(() => formatEditorContent({ current: editor }), 100);
   };
 
-  const setNewData = () => {
-    const getHTML = htmlEditorRef.current?.getValue() || grapesjs.getHtml();
-    const getCSS = cssEditorRef.current?.getValue() || grapesjs.getCss();
-    const getJs = jsEditorRef.current?.getValue() || '';
+  function setNewData() {
+    const getHTML = htmlEditorRef.current.getValue();
+    const getCSS = cssEditorRef.current.getValue();
+    const getJs = jsEditorRef.current.getValue();
 
-    grapesjs?.setComponents(getHTML);
-    grapesjs?.setStyle(getCSS);
+    grapesjs?.setComponents(getHTML === '' || undefined ? grapesjs.getHtml() : getHTML)
+    grapesjs?.setStyle(getCSS === '' || undefined ? grapesjs.getCss() : getCSS)
     console.log('HTML:', getHTML);
     console.log('CSS:', getCSS);
     console.log('JS:', getJs);
-  };
+  }
 
-  return (
-    <div className="flex flex-col gap-10">
+  return ( 
+    <>
+    <div className='flex flex-col gap-10'>
       <Tabs defaultValue="HTML" className="h-96">
         <TabsList>
           <TabsTrigger value="HTML">HTML</TabsTrigger>
@@ -76,14 +75,15 @@ const MonacoEditor = () => {
           <Editor
             height="100%"
             defaultLanguage="javascript"
-            defaultValue=""
+            defaultValue={grapesjs?.getJs()}
             theme="vs-dark"
             onMount={(editor) => handleEditorDidMount(editor, 'javascript')}
           />
         </TabsContent>
       </Tabs>
       <Button onClick={setNewData}>Save</Button>
-    </div>
+      </div>
+    </>
   );
 };
 

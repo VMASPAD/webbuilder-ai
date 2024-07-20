@@ -5,8 +5,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import getEditorInstance from "../grapesjs";
 
+type Font = {
+  url: string;
+  name: string;
+  active: boolean;
+};
+
 const FontManagement = () => {
-  const [fonts, setFonts] = useState([]);
+  const [fonts, setFonts] = useState<Font[]>([]);
   const [newFontUrl, setNewFontUrl] = useState('');
 
   useEffect(() => {
@@ -14,7 +20,6 @@ const FontManagement = () => {
     const parsedFonts = storedFonts ? JSON.parse(storedFonts) : [];
     setFonts(parsedFonts);
   }, []);
-  
 
   const addFont = () => {
     if (!newFontUrl) return;
@@ -28,8 +33,8 @@ const FontManagement = () => {
     updateGrapesJSFonts(updatedFonts);
   };
 
-  const toggleFont = (index) => {
-    const updatedFonts = fonts.map((font, i) => 
+  const toggleFont = (index: number) => {
+    const updatedFonts = fonts.map((font, i) =>
       i === index ? { ...font, active: !font.active } : font
     );
     setFonts(updatedFonts);
@@ -37,26 +42,32 @@ const FontManagement = () => {
     updateGrapesJSFonts(updatedFonts);
   };
 
-  const extractFontName = (url) => {
+  const extractFontName = (url: string) => {
     const familyMatch = url.match(/family=([^:&]+)/);
     return familyMatch ? familyMatch[1].replace(/\+/g, ' ') : 'Unknown Font';
   };
 
-  const updateGrapesJSFonts = (updatedFonts) => {
+  const updateGrapesJSFonts = (updatedFonts: Font[]) => {
     const editor = getEditorInstance();
     if (editor) {
       const activeFonts = updatedFonts.filter(font => font.active);
-      
+
       // Update font options in GrapesJS
       const fontOptions = activeFonts.map(font => ({
         value: `"${font.name}", sans-serif`,
         name: font.name
       }));
 
-      editor.StyleManager.getProperty('typography', 'font-family').set('options', fontOptions);
+      const fontFamilyProperty = editor.StyleManager.getProperty('typography', 'font-family');
+      if (fontFamilyProperty) {
+        fontFamilyProperty.set({
+          ...fontFamilyProperty.attributes,
+          options: fontOptions
+        });
+      }
 
       // Add font styles to the editor
-      const fontStyles = activeFonts.map(font => 
+      const fontStyles = activeFonts.map(font =>
         `@import url('${font.url}');`
       ).join('\n');
 
@@ -67,8 +78,8 @@ const FontManagement = () => {
   return (
     <div>
       <div className="mb-4">
-        <Input 
-          placeholder="Enter Google Fonts URL" 
+        <Input
+          placeholder="Enter Google Fonts URL"
           value={newFontUrl}
           onChange={(e) => setNewFontUrl(e.target.value)}
         />

@@ -10,9 +10,11 @@ const FontManagement = () => {
   const [newFontUrl, setNewFontUrl] = useState('');
 
   useEffect(() => {
-    const storedFonts = JSON.parse(localStorage.getItem('fonts')) || [];
-    setFonts(storedFonts);
+    const storedFonts = localStorage.getItem('fonts');
+    const parsedFonts = storedFonts ? JSON.parse(storedFonts) : [];
+    setFonts(parsedFonts);
   }, []);
+  
 
   const addFont = () => {
     if (!newFontUrl) return;

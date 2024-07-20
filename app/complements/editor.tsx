@@ -1,23 +1,23 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
-import { Editor, useMonaco, Monaco } from '@monaco-editor/react';
+import { Editor, useMonaco } from '@monaco-editor/react';
 import getEditorInstance from '../grapesjs';
 
 const MonacoEditor = () => {
   const grapesjs = getEditorInstance();
-  const htmlEditorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
-  const cssEditorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
-  const jsEditorRef = useRef<Monaco.editor.IStandaloneCodeEditor | null>(null);
+  const htmlEditorRef = useRef(null);
+  const cssEditorRef = useRef(null);
+  const jsEditorRef = useRef(null);
   const monaco = useMonaco();
 
-  const formatEditorContent = (editorRef: React.MutableRefObject<Monaco.editor.IStandaloneCodeEditor | null>) => {
+  const formatEditorContent = (editorRef) => {
     if (editorRef.current) {
       editorRef.current.getAction('editor.action.formatDocument').run();
     }
   };
 
-  const handleEditorDidMount = (editor: Monaco.editor.IStandaloneCodeEditor, language: string) => {
+  const handleEditorDidMount = (editor, language) => {
     switch (language) {
       case 'html':
         htmlEditorRef.current = editor;
@@ -28,21 +28,23 @@ const MonacoEditor = () => {
       case 'javascript':
         jsEditorRef.current = editor;
         break;
+      default:
+        break;
     }
     setTimeout(() => formatEditorContent({ current: editor }), 100);
   };
 
-  function setNewData() {
-    const getHTML = htmlEditorRef.current?.getValue();
-    const getCSS = cssEditorRef.current?.getValue();
-    const getJs = jsEditorRef.current?.getValue();
+  const setNewData = () => {
+    const getHTML = htmlEditorRef.current?.getValue() || grapesjs.getHtml();
+    const getCSS = cssEditorRef.current?.getValue() || grapesjs.getCss();
+    const getJs = jsEditorRef.current?.getValue() || '';
 
-    grapesjs?.setComponents(getHTML === '' || undefined ? grapesjs.getHtml() : getHTML);
-    grapesjs?.setStyle(getCSS === '' || undefined ? grapesjs.getCss() : getCSS);
+    grapesjs.setComponents(getHTML);
+    grapesjs.setStyle(getCSS);
     console.log('HTML:', getHTML);
     console.log('CSS:', getCSS);
     console.log('JS:', getJs);
-  }
+  };
 
   return (
     <div className="flex flex-col gap-10">
@@ -74,7 +76,7 @@ const MonacoEditor = () => {
           <Editor
             height="100%"
             defaultLanguage="javascript"
-            defaultValue={grapesjs?.getJs()}
+            defaultValue=""
             theme="vs-dark"
             onMount={(editor) => handleEditorDidMount(editor, 'javascript')}
           />

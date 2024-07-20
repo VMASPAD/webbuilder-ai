@@ -11,13 +11,13 @@ const MonacoEditor = () => {
   const jsEditorRef = useRef(null);
   const monaco = useMonaco();
 
-  const formatEditorContent = (editorRef) => {
+  const formatEditorContent = (editorRef: any) => {
     if (editorRef.current) {
       editorRef.current.getAction('editor.action.formatDocument').run();
     }
   };
 
-  const handleEditorDidMount = (editor, language) => {
+  const handleEditorDidMount = (editor: any, language: any) => {
     switch (language) {
       case 'html':
         htmlEditorRef.current = editor;
@@ -39,8 +39,8 @@ const MonacoEditor = () => {
     const getCSS = cssEditorRef.current?.getValue() || grapesjs.getCss();
     const getJs = jsEditorRef.current?.getValue() || '';
 
-    grapesjs.setComponents(getHTML);
-    grapesjs.setStyle(getCSS);
+    grapesjs?.setComponents(getHTML);
+    grapesjs?.setStyle(getCSS);
     console.log('HTML:', getHTML);
     console.log('CSS:', getCSS);
     console.log('JS:', getJs);

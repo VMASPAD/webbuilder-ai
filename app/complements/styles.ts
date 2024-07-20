@@ -18,14 +18,17 @@ const displayValues: string[] = [
 
 // Función para obtener las fuentes almacenadas
 const getStoredFonts = (): SelectOption[] => {
-  const storedFonts = JSON.parse(localStorage.getItem('fonts') || '[]');
-  return storedFonts
-    .filter((font: { active: boolean }) => font.active)
-    .map((font: { name: string }, index: number) => ({
-      id: String(index),  // Usa un identificador único
-      value: `"${font.name}", sans-serif`,
-      name: font.name,
-    }));
+  if (typeof window !== 'undefined') {
+    const storedFonts = JSON.parse(localStorage.getItem('fonts') || '[]');
+    return storedFonts
+      .filter((font: { active: boolean }) => font.active)
+      .map((font: { name: string }, index: number) => ({
+        id: String(index),  // Usa un identificador único
+        value: `"${font.name}", sans-serif`,
+        name: font.name,
+      }));
+  }
+  return [];
 };
 
 // Fuentes por defecto

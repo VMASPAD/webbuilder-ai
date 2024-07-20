@@ -37,7 +37,7 @@ const MonacoEditor = () => {
 
   function setNewData() {
     const getHTML = htmlEditorRef.current ? htmlEditorRef.current.getValue() : '';
-    const getCSS = cssEditorRef.current ? cssEditorRef.current.getValue() : '';
+    const getCSS = cssEditorRef.current ? cssEditorRef.current.getValue() : ''; 
     const getJs = jsEditorRef.current ? jsEditorRef.current.getValue() : '';
     
 

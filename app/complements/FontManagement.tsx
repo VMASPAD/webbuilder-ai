@@ -53,18 +53,19 @@ const FontManagement = () => {
       const activeFonts = updatedFonts.filter(font => font.active);
 
       // Update font options in GrapesJS
-      const fontOptions = activeFonts.map(font => ({
+      const fontOptions = activeFonts.map((font, index) => ({
+        id: index.toString(), // Convert id to string
         value: `"${font.name}", sans-serif`,
         name: font.name
       }));
 
-      const fontFamilyProperty = editor.StyleManager.getProperty('typography', 'font-family');
-      if (fontFamilyProperty) {
-        fontFamilyProperty.set({
-          ...fontFamilyProperty.attributes,
-          options: fontOptions
-        });
-      }
+      editor.StyleManager.addProperty('typography', {
+        name: 'Font',
+        property: 'font-family',
+        type: 'select',
+        defaults: 'Arial, Helvetica, sans-serif',
+        options: fontOptions
+      });
 
       // Add font styles to the editor
       const fontStyles = activeFonts.map(font =>

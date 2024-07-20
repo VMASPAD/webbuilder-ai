@@ -3,12 +3,15 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Editor, useMonaco } from '@monaco-editor/react';
 import getEditorInstance from '../grapesjs';
+interface Editor {
+  getValue(): string;
+}
 
 const MonacoEditor = () => {
   const grapesjs = getEditorInstance();
-  const htmlEditorRef = useRef(null);
-  const cssEditorRef = useRef(null);
-  const jsEditorRef = useRef(null);
+  const htmlEditorRef = useRef<Editor | null>(null);
+  const cssEditorRef = useRef<Editor | null>(null);
+  const jsEditorRef = useRef<Editor | null>(null);
   const monaco = useMonaco();
 
   const formatEditorContent = (editorRef: any) => {
@@ -33,9 +36,10 @@ const MonacoEditor = () => {
   };
 
   function setNewData() {
-    const getHTML = htmlEditorRef.current.getValue();
-    const getCSS = cssEditorRef.current.getValue();
-    const getJs = jsEditorRef.current.getValue();
+    const getHTML = htmlEditorRef.current ? htmlEditorRef.current.getValue() : '';
+    const getCSS = cssEditorRef.current ? cssEditorRef.current.getValue() : '';
+    const getJs = jsEditorRef.current ? jsEditorRef.current.getValue() : '';
+    
 
     grapesjs?.setComponents(getHTML === '' || undefined ? grapesjs.getHtml() : getHTML)
     grapesjs?.setStyle(getCSS === '' || undefined ? grapesjs.getCss() : getCSS)

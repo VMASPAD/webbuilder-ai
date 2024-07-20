@@ -74,8 +74,7 @@ export default function Home() {
       blockManager: blocks.blockManager,
       panels: panels,
       styleManager: styleManager,
-      deviceManager: deviceManager,
-      allowScripts: 1,  // Permitir scripts 
+      deviceManager: deviceManager, 
     });
     setEditorInstance(editor);
 
@@ -119,25 +118,59 @@ export default function Home() {
     }
     editor.Commands.add("preview", {
       run(editor) {
-        const blocks = document.getElementById("blocks");
-        const allUi = document.getElementById("allUi");
-        const panel = document.querySelector(".panel__right");
-        blocks.style.display = "none";
-        allUi.style.gridTemplateColumns = "repeat(1, minmax(0, 1fr))";
-        panel.style.display = "none";
+        const blocks = document.getElementById("blocks") as HTMLElement | null;
+        const allUi = document.getElementById("allUi") as HTMLElement | null;
+        const panel = document.querySelector(".panel__right") as HTMLElement | null;
+    
+        // Verificar si los elementos existen antes de manipularlos
+        if (blocks) {
+          blocks.style.display = "none";
+        } else {
+          console.warn("Elemento 'blocks' no encontrado.");
+        }
+    
+        if (allUi) {
+          allUi.style.gridTemplateColumns = "repeat(1, minmax(0, 1fr))";
+        } else {
+          console.warn("Elemento 'allUi' no encontrado.");
+        }
+    
+        if (panel) {
+          panel.style.display = "none";
+        } else {
+          console.warn("Elemento 'panel__right' no encontrado.");
+        }
+    
         console.log(blocks);
         editor.runCommand("core:preview");
       },
       stop(editor) {
-        const blocks = document.getElementById("blocks");
-        const allUi = document.getElementById("allUi");
-        const panel = document.querySelector(".panel__right");
-        panel.style.display = "block";
-        allUi.style.gridTemplateColumns = "repeat(8, minmax(0, 1fr))";
-        blocks.style.display = "block";
+        const blocks = document.getElementById("blocks") as HTMLElement | null;
+        const allUi = document.getElementById("allUi") as HTMLElement | null;
+        const panel = document.querySelector(".panel__right") as HTMLElement | null;
+    
+        if (panel) {
+          panel.style.display = "block";
+        } else {
+          console.warn("Elemento 'panel__right' no encontrado.");
+        }
+    
+        if (allUi) {
+          allUi.style.gridTemplateColumns = "repeat(8, minmax(0, 1fr))";
+        } else {
+          console.warn("Elemento 'allUi' no encontrado.");
+        }
+    
+        if (blocks) {
+          blocks.style.display = "block";
+        } else {
+          console.warn("Elemento 'blocks' no encontrado.");
+        }
+    
         editor.stopCommand("core:preview");
       },
     });
+    
     editor.Commands.add('open-code-editor', {
       run(editor) {
         const modal = editor.Modal;

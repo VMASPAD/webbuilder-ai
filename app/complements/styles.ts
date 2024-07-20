@@ -1,6 +1,14 @@
 import grapesjs, { StyleManagerConfig } from "grapesjs";
 
-const displayValues = [
+// Define el tipo SelectOption
+interface SelectOption {
+  id: string;
+  value: string;
+  name: string;
+}
+
+// Lista de valores de display
+const displayValues: string[] = [
   'block', 'inline', 'inline-block', 'flex', 'inline-flex', 'grid',
   'inline-grid', 'flow-root', 'none', 'contents', 'table', 'table-row',
   'table-cell', 'table-row-group', 'table-column', 'table-column-group',
@@ -8,32 +16,36 @@ const displayValues = [
   'run-in', 'inherit', 'initial', 'revert', 'unset'
 ];
 
-const getStoredFonts = (): { value: string; name: string }[] => {
+// Función para obtener las fuentes almacenadas
+const getStoredFonts = (): SelectOption[] => {
   const storedFonts = JSON.parse(localStorage.getItem('fonts') || '[]');
   return storedFonts
     .filter((font: { active: boolean }) => font.active)
-    .map((font: { name: string }) => ({
+    .map((font: { name: string }, index: number) => ({
+      id: String(index),  // Usa un identificador único
       value: `"${font.name}", sans-serif`,
       name: font.name,
     }));
 };
 
-const defaultFonts = [
-  { value: "Arial, Helvetica, sans-serif", name: "Arial" },
-  { value: "Arial Black, Gadget, sans-serif", name: "Arial Black" },
-  { value: "Comic Sans MS, cursive", name: "Comic Sans MS" },
-  { value: "Courier New, Courier, monospace", name: "Courier New" },
-  { value: "Georgia, serif", name: "Georgia" },
-  { value: "Helvetica, serif", name: "Helvetica" },
-  { value: "Impact, Charcoal, sans-serif", name: "Impact" },
-  { value: "Lucida Sans Unicode, Lucida Grande, sans-serif", name: "Lucida Sans Unicode" },
-  { value: "Tahoma, Geneva, sans-serif", name: "Tahoma" },
-  { value: "Times New Roman, Times, serif", name: "Times New Roman" },
-  { value: "Trebuchet MS, Helvetica, sans-serif", name: "Trebuchet MS" },
-  { value: "Verdana, Geneva, sans-serif", name: "Verdana" },
-  { value: '"Roboto", sans-serif', name: "Roboto" },
+// Fuentes por defecto
+const defaultFonts: SelectOption[] = [
+  { id: "1", value: "Arial, Helvetica, sans-serif", name: "Arial" },
+  { id: "2", value: "Arial Black, Gadget, sans-serif", name: "Arial Black" },
+  { id: "3", value: "Comic Sans MS, cursive", name: "Comic Sans MS" },
+  { id: "4", value: "Courier New, Courier, monospace", name: "Courier New" },
+  { id: "5", value: "Georgia, serif", name: "Georgia" },
+  { id: "6", value: "Helvetica, serif", name: "Helvetica" },
+  { id: "7", value: "Impact, Charcoal, sans-serif", name: "Impact" },
+  { id: "8", value: "Lucida Sans Unicode, Lucida Grande, sans-serif", name: "Lucida Sans Unicode" },
+  { id: "9", value: "Tahoma, Geneva, sans-serif", name: "Tahoma" },
+  { id: "10", value: "Times New Roman, Times, serif", name: "Times New Roman" },
+  { id: "11", value: "Trebuchet MS, Helvetica, sans-serif", name: "Trebuchet MS" },
+  { id: "12", value: "Verdana, Geneva, sans-serif", name: "Verdana" },
+  { id: "13", value: '"Roboto", sans-serif', name: "Roboto" },
 ];
 
+// Configuración del StyleManager
 export const styleManager: StyleManagerConfig = {
   appendTo: ".styles-container",
   sectors: [
@@ -49,15 +61,15 @@ export const styleManager: StyleManagerConfig = {
         "left",
         "bottom",
       ],
-      properties:[
+      properties: [
         {
           name: 'Display',
           property: 'display',
           type: 'select',
           defaults: 'block',
-          options: displayValues.map(value => ({ id: value, name: value })),
+          options: displayValues.map(value => ({ id: value, name: value, value })),
         },
-      ]
+      ],
     },
     {
       name: "Flex",
@@ -122,12 +134,12 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'block',
           list: [
-            { value: 'block' },
-            { value: 'inline' },
-            { value: 'inline-block' },
-            { value: 'flex' },
-            { value: 'grid' }
-          ]
+            { value: 'block', id: "block" },
+            { value: 'inline', id: "inline" },
+            { value: 'inline-block', id: "inline-block" },
+            { value: 'flex', id: "flex" },
+            { value: 'grid', id: "grid" }
+          ],
         },
         {
           name: 'Grid Template Columns',
@@ -140,17 +152,17 @@ export const styleManager: StyleManagerConfig = {
               type: 'select',
               defaults: 'repeat',
               list: [
-                { value: 'repeat' },
-                { value: 'minmax' },
-                { value: 'custom' }
-              ]
+                { value: 'repeat', id: "repeat" },
+                { value: 'minmax', id: "minmax" },
+                { value: 'custom', id: "custom" }
+              ],
             },
             {
               name: 'Value',
               property: 'grid-template-columns-value',
-              type: 'text'
-            }
-          ]
+              type: 'text',
+            },
+          ],
         },
         {
           name: 'Grid Template Rows',
@@ -163,17 +175,17 @@ export const styleManager: StyleManagerConfig = {
               type: 'select',
               defaults: 'repeat',
               list: [
-                { value: 'repeat' },
-                { value: 'minmax' },
-                { value: 'custom' }
-              ]
+                { value: 'repeat', id: "repeat" },
+                { value: 'minmax', id: "minmax" },
+                { value: 'custom', id: "custom" }
+              ],
             },
             {
               name: 'Value',
               property: 'grid-template-rows-value',
-              type: 'text'
-            }
-          ]
+              type: 'text',
+            },
+          ],
         },
         {
           name: 'Grid Auto Columns',
@@ -181,11 +193,11 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'auto',
           list: [
-            { value: 'auto' },
-            { value: 'min-content' },
-            { value: 'max-content' },
-            { value: 'minmax(min-content, max-content)' }
-          ]
+            { value: 'auto', id: "auto" },
+            { value: 'min-content', id: "min-content" },
+            { value: 'max-content', id: "max-content" },
+            { value: 'minmax(min-content, max-content)', id: "minmax(min-content, max-content)" }
+          ],
         },
         {
           name: 'Grid Auto Rows',
@@ -193,11 +205,11 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'auto',
           list: [
-            { value: 'auto' },
-            { value: 'min-content' },
-            { value: 'max-content' },
-            { value: 'minmax(min-content, max-content)' }
-          ]
+            { value: 'auto', id: "auto" },
+            { value: 'min-content', id: "min-content" },
+            { value: 'max-content', id: "max-content" },
+            { value: 'minmax(min-content, max-content)', id: "minmax(min-content, max-content)" }
+          ],
         },
         {
           name: 'Grid Auto Flow',
@@ -205,11 +217,11 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'row',
           list: [
-            { value: 'row' },
-            { value: 'column' },
-            { value: 'row dense' },
-            { value: 'column dense' }
-          ]
+            { value: 'row', id: "row" },
+            { value: 'column', id: "column" },
+            { value: 'row dense', id: "row dense" },
+            { value: 'column dense', id: "column dense" }
+          ],
         },
         {
           name: 'Grid Column Gap',
@@ -218,7 +230,7 @@ export const styleManager: StyleManagerConfig = {
           defaults: '0',
           min: 0,
           max: 50,
-          step: 1
+          step: 1,
         },
         {
           name: 'Grid Row Gap',
@@ -227,7 +239,7 @@ export const styleManager: StyleManagerConfig = {
           defaults: '0',
           min: 0,
           max: 50,
-          step: 1
+          step: 1,
         },
         {
           name: 'Justify Items',
@@ -235,11 +247,11 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'stretch',
           list: [
-            { value: 'start' },
-            { value: 'end' },
-            { value: 'center' },
-            { value: 'stretch' }
-          ]
+            { value: 'start', id: "start" },
+            { value: 'end', id: "end" },
+            { value: 'center', id: "center" },
+            { value: 'stretch', id: "stretch" }
+          ],
         },
         {
           name: 'Align Items',
@@ -247,11 +259,11 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'stretch',
           list: [
-            { value: 'start' },
-            { value: 'end' },
-            { value: 'center' },
-            { value: 'stretch' }
-          ]
+            { value: 'start', id: "start" },
+            { value: 'end', id: "end" },
+            { value: 'center', id: "center" },
+            { value: 'stretch', id: "stretch" }
+          ],
         },
         {
           name: 'Justify Content',
@@ -259,14 +271,14 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'start',
           list: [
-            { value: 'start' },
-            { value: 'end' },
-            { value: 'center' },
-            { value: 'stretch' },
-            { value: 'space-around' },
-            { value: 'space-between' },
-            { value: 'space-evenly' }
-          ]
+            { value: 'start', id: "start" },
+            { value: 'end', id: "end" },
+            { value: 'center', id: "center" },
+            { value: 'stretch', id: "stretch" },
+            { value: 'space-around', id: "space-around" },
+            { value: 'space-between', id: "space-between" },
+            { value: 'space-evenly', id: "space-evenly" }
+          ],
         },
         {
           name: 'Align Content',
@@ -274,16 +286,16 @@ export const styleManager: StyleManagerConfig = {
           type: 'select',
           defaults: 'stretch',
           list: [
-            { value: 'start' },
-            { value: 'end' },
-            { value: 'center' },
-            { value: 'stretch' },
-            { value: 'space-around' },
-            { value: 'space-between' },
-            { value: 'space-evenly' }
-          ]
-        }
-      ]
+            { value: 'start', id: "start" },
+            { value: 'end', id: "end" },
+            { value: 'center', id: "center" },
+            { value: 'stretch', id: "stretch" },
+            { value: 'space-around', id: "space-around" },
+            { value: 'space-between', id: "space-between" },
+            { value: 'space-evenly', id: "space-evenly" }
+          ],
+        },
+      ],
     },
     {
       name: "Decorations",
@@ -312,7 +324,8 @@ export const styleManager: StyleManagerConfig = {
   ],
 };
 
-export const updateTypographyOptions = (editor: grapesjs.Editor) => {
+// Función para actualizar las opciones de tipografía
+export const updateTypographyOptions = (editor: any) => {
   const typographySector = editor.StyleManager.getSector('Typography');
   if (typographySector) {
     const fontProperty = typographySector.getProperty('font-family');

@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "homepage":"https://web-builder-ai.vercel.app/",
   "dependencies": {
     "@ai-sdk/openai": "^0.0.36",
     "@monaco-editor/react": "^4.6.0",

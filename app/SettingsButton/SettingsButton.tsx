@@ -92,7 +92,6 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
               <TabsTrigger value="Settings">Settings</TabsTrigger>
               <TabsTrigger value="AI">AI</TabsTrigger>
               <TabsTrigger value="Fonts">Fonts</TabsTrigger>
-              <TabsTrigger value="Theme">Theme</TabsTrigger>
             </TabsList>
             <TabsContent value="Settings">
               <div className="my-10">
@@ -107,6 +106,9 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
                   </label>
                 </div>
                 <Separator className="my-4" />
+                <label htmlFor="context-checkbox">
+                    Use archive css external
+                  </label>
                 <Input
                   placeholder="Archive CSS"
                   type="file"
@@ -143,10 +145,6 @@ const SettingsButton = ({ isOpen, onClose }: DialogProps) => {
             <TabsContent value="Fonts">
               <DialogTitle>Theme Management</DialogTitle>
               <FontManagement />
-            </TabsContent>
-            <TabsContent value="Theme">
-              <DialogTitle>Font Management</DialogTitle>
-              <Textarea />
             </TabsContent>
           </Tabs>
         </DialogHeader>

@@ -19,6 +19,7 @@ const FontManagement = () => {
     const storedFonts = localStorage.getItem('fonts');
     const parsedFonts = storedFonts ? JSON.parse(storedFonts) : [];
     setFonts(parsedFonts);
+    updateGrapesJSFonts(parsedFonts);
   }, []);
 
   const addFont = () => {
@@ -50,29 +51,28 @@ const FontManagement = () => {
   const updateGrapesJSFonts = (updatedFonts: Font[]) => {
     const editor = getEditorInstance();
     if (editor) {
+      const canvas = editor.Canvas;
+      const head = canvas.getDocument().head;
+      
+      // Remove existing font style tags
+      const existingStyleTags = head.querySelectorAll('style[data-font-styles]');
+      existingStyleTags.forEach(tag => tag.remove());
+
+      // Add new style tag with active fonts
       const activeFonts = updatedFonts.filter(font => font.active);
-
-      // Update font options in GrapesJS
-      const fontOptions = activeFonts.map((font, index) => ({
-        id: index.toString(), // Convert id to string
-        value: `"${font.name}", sans-serif`,
-        name: font.name
-      }));
-
-      editor.StyleManager.addProperty('typography', {
-        name: 'Font',
-        property: 'font-family',
-        type: 'select',
-        defaults: 'Arial, Helvetica, sans-serif',
-        options: fontOptions
-      });
-
-      // Add font styles to the editor
       const fontStyles = activeFonts.map(font =>
         `@import url('${font.url}');`
       ).join('\n');
 
-      editor.Canvas.getDocument().head.innerHTML += `<style>${fontStyles}</style>`;
+      if (fontStyles) {
+        const styleTag = canvas.getDocument().createElement('style');
+        styleTag.setAttribute('data-font-styles', '');
+        styleTag.textContent = fontStyles;
+        head.appendChild(styleTag);
+      }
+
+      // Trigger a canvas update
+      editor.refresh();
     }
   };
 

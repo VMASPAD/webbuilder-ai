@@ -23,8 +23,8 @@ const getStoredFonts = (): SelectOption[] => {
     return storedFonts
       .filter((font: { active: boolean }) => font.active)
       .map((font: { name: string }, index: number) => ({
-        id: String(index),  // Usa un identificador único
-        value: `"${font.name}", sans-serif`,
+        value: String(font.name),  // Usa un identificador único
+        id: `"${font.name}", sans-serif`,
         name: font.name,
       }));
   }
@@ -33,19 +33,19 @@ const getStoredFonts = (): SelectOption[] => {
 
 // Fuentes por defecto
 const defaultFonts: SelectOption[] = [
-  { id: "1", value: "Arial, Helvetica, sans-serif", name: "Arial" },
-  { id: "2", value: "Arial Black, Gadget, sans-serif", name: "Arial Black" },
-  { id: "3", value: "Comic Sans MS, cursive", name: "Comic Sans MS" },
-  { id: "4", value: "Courier New, Courier, monospace", name: "Courier New" },
-  { id: "5", value: "Georgia, serif", name: "Georgia" },
-  { id: "6", value: "Helvetica, serif", name: "Helvetica" },
-  { id: "7", value: "Impact, Charcoal, sans-serif", name: "Impact" },
-  { id: "8", value: "Lucida Sans Unicode, Lucida Grande, sans-serif", name: "Lucida Sans Unicode" },
-  { id: "9", value: "Tahoma, Geneva, sans-serif", name: "Tahoma" },
-  { id: "10", value: "Times New Roman, Times, serif", name: "Times New Roman" },
-  { id: "11", value: "Trebuchet MS, Helvetica, sans-serif", name: "Trebuchet MS" },
-  { id: "12", value: "Verdana, Geneva, sans-serif", name: "Verdana" },
-  { id: "13", value: '"Roboto", sans-serif', name: "Roboto" },
+  { value: "1", id: "Arial, Helvetica, sans-serif", name: "Arial" },
+  { value: "2", id: "Arial Black, Gadget, sans-serif", name: "Arial Black" },
+  { value: "3", id: "Comic Sans MS, cursive", name: "Comic Sans MS" },
+  { value: "4", id: "Courier New, Courier, monospace", name: "Courier New" },
+  { value: "5", id: "Georgia, serif", name: "Georgia" },
+  { value: "6", id: "Helvetica, serif", name: "Helvetica" },
+  { value: "7", id: "Impact, Charcoal, sans-serif", name: "Impact" },
+  { value: "8", id: "Lucida Sans Unicode, Lucida Grande, sans-serif", name: "Lucida Sans Unicode" },
+  { value: "9", id: "Tahoma, Geneva, sans-serif", name: "Tahoma" },
+  { value: "10", id: "Times New Roman, Times, serif", name: "Times New Roman" },
+  { value: "11", id: "Trebuchet MS, Helvetica, sans-serif", name: "Trebuchet MS" },
+  { value: "12", id: "Verdana, Geneva, sans-serif", name: "Verdana" },
+  { value: "13", id: '"Roboto", sans-serif', name: "Roboto" },
 ];
 
 // Configuración del StyleManager

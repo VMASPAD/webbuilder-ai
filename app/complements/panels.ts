@@ -55,19 +55,11 @@ export const panels: PanelsConfig  = {
           context: "export-template",
         },
         {
-          id: "darkmode",
-          className: "btn-open-export",
-          label: `<img width="25px" src="./sun.svg" class="invert dark:filter invert-0"/>`,
-          command: "darkMode",
-          context: "darkMode",
-        },
-        {
           id: "show-json",
           className: "btn-show-json",
           label: `<img width="25px" src="./TablerJson.svg" class="invert dark:filter invert-0"/>`,
           context: "show-json",
           command(editor) {
-            console.log(editor);
             editor.Modal.setTitle("Components JSON")
               .setContent(
                 `<textarea style="width:100%;" class="text-black h-96">

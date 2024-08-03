@@ -67,13 +67,5 @@ export const command: CommandsConfig =
           this.getTraitsEl(editor).style.display = "none";
         }
       }, 
-      {
-        id: 'darkMode', 
-        run(editor: Editor, sender) { 
-          document.documentElement.classList.toggle('dark');
-        },
-        stop(editor: Editor, sender) { 
-        }
-      }
     ]
 } 

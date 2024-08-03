@@ -42,10 +42,7 @@ const MonacoEditor = () => {
     
 
     grapesjs?.setComponents(getHTML === '' || undefined ? grapesjs.getHtml() : getHTML)
-    grapesjs?.setStyle(getCSS === '' || undefined ? grapesjs.getCss() : getCSS)
-    console.log('HTML:', getHTML);
-    console.log('CSS:', getCSS);
-    console.log('JS:', getJs);
+    grapesjs?.setStyle(getCSS === '' || undefined ? grapesjs.getCss() : getCSS) 
   }
 
   return ( 

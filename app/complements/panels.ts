@@ -62,7 +62,7 @@ export const panels: PanelsConfig  = {
           context: "darkMode",
         },
         {
-          id: "show-json",
+          id: "show-json", 
           className: "btn-show-json",
           label: `<img width="25px" src="./TablerJson.svg" class="invert dark:filter invert-0"/>`,
           context: "show-json",
